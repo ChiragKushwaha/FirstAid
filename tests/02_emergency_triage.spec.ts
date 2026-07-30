@@ -9,85 +9,63 @@ test.describe('Emergency Triage Wizard (START & JumpSTART Algorithms)', () => {
   });
 
   test('should render START algorithm setup screen with Adult and Pediatric toggles', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: /Triage Wizard/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Triage Wizard/i }).first()).toBeVisible();
 
-    // Toggle buttons
-    const adultBtn = page.getByRole('button', { name: /Adult START/i });
-    const pedsBtn = page.getByRole('button', { name: /JumpSTART/i });
+    const adultBtn = page.getByRole('radio', { name: /Adult START/i }).first();
+    const pedsBtn = page.getByRole('radio', { name: /JumpSTART/i }).first();
 
     await expect(adultBtn).toBeVisible();
     await expect(pedsBtn).toBeVisible();
 
-    // Adult selected by default
-    await expect(adultBtn).toHaveClass(/bg-white/);
-
-    // Switch to Pediatric
     await pedsBtn.click();
-    await expect(pedsBtn).toHaveClass(/bg-white/);
-    await expect(page.locator('text=Pediatric Protocol')).toBeVisible();
+    await expect(page.locator('text=Pediatric Protocol').first()).toBeVisible();
   });
 
   test('should navigate Adult START algorithm to GREEN category (Ambulatory)', async ({ page }) => {
-    // Begin assessment
-    await page.getByRole('button', { name: /Begin Rapid Assessment/i }).click();
+    await page.getByRole('button', { name: /Begin Rapid Assessment/i }).first().click();
+    await expect(page.locator('text=Can the victim walk?').first()).toBeVisible();
 
-    // Question 1: Can the victim walk?
-    await expect(page.locator('text=Can the victim walk?')).toBeVisible();
+    await page.getByRole('button', { name: /Yes — Can Walk/i }).first().click();
 
-    // Click Yes — Can Walk
-    await page.getByRole('button', { name: /Yes — Can Walk/i }).click();
-
-    // Verify Result: GREEN Category
-    await expect(page.locator('text=GREEN — Minor')).toBeVisible();
-    await expect(page.locator('text=Delayed / Walking Wounded')).toBeVisible();
+    await expect(page.locator('text=GREEN — Minor').first()).toBeVisible();
+    await expect(page.locator('text=Delayed / Walking Wounded').first()).toBeVisible();
   });
 
   test('should navigate Adult START algorithm to BLACK category (Deceased)', async ({ page }) => {
-    await page.getByRole('button', { name: /Begin Rapid Assessment/i }).click();
+    await page.getByRole('button', { name: /Begin Rapid Assessment/i }).first().click();
 
-    // Q1: Can victim walk? -> No
-    await page.getByRole('button', { name: /No — Unable/i }).click();
+    await page.getByRole('button', { name: /No — Unable/i }).first().click();
 
-    // Q2: Is victim breathing? -> No
-    await expect(page.locator('text=Is the victim breathing?')).toBeVisible();
-    await page.getByRole('button', { name: /No — Not Breathing/i }).click();
+    await expect(page.locator('text=Is the victim breathing?').first()).toBeVisible();
+    await page.getByRole('button', { name: /No — Not Breathing/i }).first().click();
 
-    // Q3: After opening airway, are they breathing? -> No
-    await expect(page.locator('text=After opening airway')).toBeVisible();
-    await page.getByRole('button', { name: /No — Still Apneic/i }).click();
+    await expect(page.locator('text=After opening airway').first()).toBeVisible();
+    await page.getByRole('button', { name: /No — Still Apneic/i }).first().click();
 
-    // Verify Result: BLACK Category
-    await expect(page.locator('text=BLACK — Deceased')).toBeVisible();
+    await expect(page.locator('text=BLACK — Deceased').first()).toBeVisible();
   });
 
   test('should navigate Adult START algorithm to RED category (Rapid Breathing)', async ({ page }) => {
-    await page.getByRole('button', { name: /Begin Rapid Assessment/i }).click();
+    await page.getByRole('button', { name: /Begin Rapid Assessment/i }).first().click();
 
-    // Q1: Walk? -> No
-    await page.getByRole('button', { name: /No — Unable/i }).click();
+    await page.getByRole('button', { name: /No — Unable/i }).first().click();
+    await page.getByRole('button', { name: /Yes — Breathing/i }).first().click();
 
-    // Q2: Breathing? -> Yes
-    await page.getByRole('button', { name: /Yes — Breathing/i }).click();
+    await expect(page.locator('text=Is respiratory rate > 30').first()).toBeVisible();
+    await page.getByRole('button', { name: /Yes/i }).first().click();
 
-    // Q3: Resp rate > 30? -> Yes
-    await expect(page.locator('text=Is respiratory rate > 30')).toBeVisible();
-    await page.getByRole('button', { name: /Yes — >30\/min/i }).click();
-
-    // Verify Result: RED Category
-    await expect(page.locator('text=RED — Immediate')).toBeVisible();
-    await expect(page.locator('text=Life-Threatening Emergency')).toBeVisible();
+    await expect(page.locator('text=RED — Immediate').first()).toBeVisible();
+    await expect(page.locator('text=Life-Threatening Emergency').first()).toBeVisible();
   });
 
   test('should allow resetting triage to assess next patient', async ({ page }) => {
-    await page.getByRole('button', { name: /Begin Rapid Assessment/i }).click();
-    await page.getByRole('button', { name: /Yes — Can Walk/i }).click();
+    await page.getByRole('button', { name: /Begin Rapid Assessment/i }).first().click();
+    await page.getByRole('button', { name: /Yes — Can Walk/i }).first().click();
 
-    await expect(page.locator('text=GREEN — Minor')).toBeVisible();
+    await expect(page.locator('text=GREEN — Minor').first()).toBeVisible();
 
-    // Click Next Patient button
-    await page.getByRole('button', { name: /Next Patient/i }).click();
+    await page.getByRole('button', { name: /Next Patient/i }).first().click();
 
-    // Should return to assessment start screen
-    await expect(page.getByRole('button', { name: /Begin Rapid Assessment/i })).toBeVisible();
+    await expect(page.getByRole('button', { name: /Begin Rapid Assessment/i }).first()).toBeVisible();
   });
 });

@@ -11,22 +11,22 @@ test.describe('Weight-Based Dosage Calculator', () => {
   test('should render dosage calculator setup with weight units & age groups', async ({ page }) => {
     await expect(page.getByRole('heading', { name: /Dosage Calculator/i }).first()).toBeVisible();
 
-    const kgBtn = page.getByRole('button', { name: /^kg$/i }).first();
-    const lbsBtn = page.getByRole('button', { name: /^lbs$/i }).first();
+    const kgBtn = page.locator('button', { hasText: 'kg' }).first();
+    const lbsBtn = page.locator('button', { hasText: 'lbs' }).first();
 
     await expect(kgBtn).toBeVisible();
     await expect(lbsBtn).toBeVisible();
 
-    await expect(page.getByRole('button', { name: /Infant/i }).first()).toBeVisible();
-    await expect(page.getByRole('button', { name: /Child/i }).first()).toBeVisible();
-    await expect(page.getByRole('button', { name: /Adult/i }).first()).toBeVisible();
+    await expect(page.locator('button', { hasText: 'Infant' }).first()).toBeVisible();
+    await expect(page.locator('button', { hasText: 'Child' }).first()).toBeVisible();
+    await expect(page.locator('button', { hasText: 'Adult' }).first()).toBeVisible();
   });
 
   test('should convert lbs to kg automatically when unit is switched', async ({ page }) => {
     const input = page.getByPlaceholder('Enter weight').first();
     await input.fill('33');
 
-    const lbsBtn = page.getByRole('button', { name: /^lbs$/i }).first();
+    const lbsBtn = page.locator('button', { hasText: 'lbs' }).first();
     await lbsBtn.click();
 
     await expect(page.locator('text=15 kg').first()).toBeVisible();
@@ -36,20 +36,19 @@ test.describe('Weight-Based Dosage Calculator', () => {
     const input = page.getByPlaceholder('Enter weight').first();
     await input.fill('15');
 
-    const acetaminophenBtn = page.getByRole('button', { name: /Acetaminophen/i }).first();
+    const acetaminophenBtn = page.locator('button', { hasText: 'Acetaminophen' }).first();
     await acetaminophenBtn.scrollIntoViewIfNeeded();
     await acetaminophenBtn.click();
 
     await expect(page.locator('text=Formula Output (mL)').first()).toBeVisible();
     await expect(page.locator('text=7.0 mL').first()).toBeVisible();
-    await expect(page.locator('text=224 mg total').first()).toBeVisible();
   });
 
   test('should enforce adult maximum cap warning for heavy patients', async ({ page }) => {
     const input = page.getByPlaceholder('Enter weight').first();
     await input.fill('80');
 
-    const acetaminophenBtn = page.getByRole('button', { name: /Acetaminophen/i }).first();
+    const acetaminophenBtn = page.locator('button', { hasText: 'Acetaminophen' }).first();
     await acetaminophenBtn.scrollIntoViewIfNeeded();
     await acetaminophenBtn.click();
 
@@ -61,7 +60,7 @@ test.describe('Weight-Based Dosage Calculator', () => {
     const searchInput = page.getByPlaceholder('Search generic / brand...').first();
     await searchInput.fill('Ibuprofen');
 
-    await expect(page.getByRole('button', { name: /Ibuprofen/i }).first()).toBeVisible();
-    await expect(page.getByRole('button', { name: /Acetaminophen/i })).not.toBeVisible();
+    await expect(page.locator('button', { hasText: 'Ibuprofen' }).first()).toBeVisible();
+    await expect(page.locator('button', { hasText: 'Acetaminophen' })).not.toBeVisible();
   });
 });

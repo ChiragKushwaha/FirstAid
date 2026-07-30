@@ -6,17 +6,12 @@ import {
   ArrowLeft,
   RotateCcw,
   CheckCircle2,
-  Circle,
-  Triangle,
-  AlertOctagon,
-  Square,
   ChevronRight,
   User,
   Baby,
   Activity,
-  Heart,
-  Plus,
 } from 'lucide-react';
+import ThemeToggle from '@/components/ThemeToggle';
 
 type TriageCategory = 'RED' | 'YELLOW' | 'GREEN' | 'BLACK';
 type PatientType = 'adult' | 'pediatric';
@@ -162,7 +157,6 @@ const TRIAGE_RESULTS: Record<
     description: string;
     action: string;
     cardClass: string;
-    badgeBg: string;
     textDark: boolean;
   }
 > = {
@@ -171,8 +165,7 @@ const TRIAGE_RESULTS: Record<
     sub: 'Delayed / Walking Wounded',
     description: 'Patient is ambulatory with minor injuries. Not in immediate danger.',
     action: 'Treat and release or direct to minor treatment area. Reassess if condition changes.',
-    cardClass: 'feat-card-green',
-    badgeBg: '#8CBD5A',
+    cardClass: 'feat-card-green leaf-card-left',
     textDark: true,
   },
   YELLOW: {
@@ -180,8 +173,7 @@ const TRIAGE_RESULTS: Record<
     sub: 'Serious but Stable',
     description: 'Stable respiration and circulation. Cannot walk. Treatment can be delayed briefly.',
     action: 'Transport after RED patients. Monitor closely. Reassess every 10–15 minutes.',
-    cardClass: 'feat-card-yellow',
-    badgeBg: '#E5C036',
+    cardClass: 'feat-card-yellow leaf-card-right',
     textDark: true,
   },
   RED: {
@@ -189,17 +181,15 @@ const TRIAGE_RESULTS: Record<
     sub: 'Life-Threatening Emergency',
     description: 'Critical life-threatening condition requiring immediate medical intervention.',
     action: 'Transport FIRST. Airway, breathing, and hemorrhage control are top priority.',
-    cardClass: 'feat-card-coral',
-    badgeBg: '#D8633F',
+    cardClass: 'feat-card-coral leaf-card-left',
     textDark: false,
   },
   BLACK: {
     label: 'BLACK — Deceased',
     sub: 'Deceased or Unsurvivable',
     description: 'No breathing after airway intervention, or injuries incompatible with life.',
-    cardClass: 'feat-card-cream',
+    cardClass: 'feat-card-cream leaf-card-full',
     action: 'Do not attempt prolonged resuscitation in mass casualty. Tag and provide comfort if expectant.',
-    badgeBg: '#D6CB9E',
     textDark: true,
   },
 };
@@ -216,6 +206,11 @@ export default function TriagePage() {
   const currentStep = steps.find((s) => s.id === currentStepId) ?? null;
   const stepIndex = steps.findIndex((s) => s.id === currentStepId);
 
+  const announce = (text: string) => {
+    const el = document.getElementById('aria-announcer');
+    if (el) el.textContent = text;
+  };
+
   const handleAnswer = useCallback(
     (answer: 'yes' | 'no') => {
       if (!currentStep) return;
@@ -225,12 +220,15 @@ export default function TriagePage() {
         const cat = next.split(':')[1] as TriageCategory;
         setResult(cat);
         setCurrentStepId(null);
+        announce(`Triage Result: ${cat} category assigned`);
       } else {
         setHistory((h) => [...h, currentStepId!]);
         setCurrentStepId(next);
+        const nextStepObj = steps.find((s) => s.id === next);
+        if (nextStepObj) announce(`Step ${stepIndex + 2}: ${nextStepObj.question}`);
       }
     },
-    [currentStep, currentStepId]
+    [currentStep, currentStepId, stepIndex, steps]
   );
 
   const handleBack = () => {
@@ -251,6 +249,7 @@ export default function TriagePage() {
     setCurrentStepId(steps[0].id);
     setHistory([]);
     setResult(null);
+    announce(`Triage Assessment Started for ${patientType} patient. Step 1: ${steps[0].question}`);
   };
 
   const handleReset = () => {
@@ -258,6 +257,7 @@ export default function TriagePage() {
     setCurrentStepId(null);
     setResult(null);
     setHistory([]);
+    announce('Triage Assessment Reset');
   };
 
   const progress = result
@@ -267,37 +267,37 @@ export default function TriagePage() {
     : 0;
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white pb-24">
+    <div className="flex flex-col min-h-screen bg-canvas text-main pb-24">
       {/* ── Top Header ── */}
-      <div className="flex items-center justify-between px-6 pt-14 pb-4">
+      <header className="flex items-center justify-between px-6 pt-14 pb-4">
         <button
           onClick={() => (started ? handleBack() : router.back())}
-          className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95"
-          style={{ background: 'rgba(255,255,255,0.12)' }}
-          aria-label="Back"
+          className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95 border border-current/15 bg-white/10 text-current hover:bg-white/20"
+          aria-label="Go Back"
         >
-          <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2} />
+          <ArrowLeft className="w-5 h-5" strokeWidth={2} />
         </button>
 
         <div className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-white/50">Algorithm</p>
-          <h1 className="text-base font-bold text-white">Triage Wizard</h1>
+          <p className="text-xs font-semibold uppercase tracking-widest opacity-50">Algorithm</p>
+          <h1 className="text-base font-bold">Triage Wizard</h1>
         </div>
 
-        <button
-          onClick={handleReset}
-          className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95"
-          style={{ background: 'rgba(255,255,255,0.12)' }}
-          aria-label="Reset"
-        >
-          <RotateCcw className="w-4 h-4 text-white" strokeWidth={2} />
-        </button>
-      </div>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            onClick={handleReset}
+            className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95 border border-current/15 bg-white/10 text-current hover:bg-white/20"
+            aria-label="Reset Assessment"
+          >
+            <RotateCcw className="w-4 h-4" strokeWidth={2} />
+          </button>
+        </div>
+      </header>
 
-      {/* ── Progress bar if started ── */}
       {started && (
-        <div className="px-6 mb-4">
-          <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+        <div className="px-6 mb-4" role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
+          <div className="h-2 w-full bg-current/10 rounded-full overflow-hidden">
             <div
               className="h-full bg-[#EB7A53] transition-all duration-300 rounded-full"
               style={{ width: `${progress}%` }}
@@ -306,20 +306,20 @@ export default function TriagePage() {
         </div>
       )}
 
-      {/* ── Main Content Area ── */}
-      <div className="px-6 flex-1 flex flex-col justify-center pt-2">
-        {/* START SCREEN */}
+      <main className="px-6 flex-1 flex flex-col justify-center pt-2">
         {!started && !result && (
           <div className="animate-card-in space-y-5">
-            {/* Adult / Pediatric selector pills */}
             <div
-              className="p-1.5 rounded-full flex gap-1"
-              style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+              className="p-1.5 rounded-full flex gap-1 bg-current/10 border border-current/15"
+              role="radiogroup"
+              aria-label="Patient Age Group"
             >
               <button
                 onClick={() => setPatientType('adult')}
+                role="radio"
+                aria-checked={patientType === 'adult'}
                 className={`flex-1 py-3 rounded-full text-sm font-bold flex items-center justify-center gap-2 transition-all ${
-                  patientType === 'adult' ? 'bg-white text-black shadow' : 'text-white/60 hover:text-white'
+                  patientType === 'adult' ? 'bg-black text-white dark:bg-white dark:text-black shadow' : 'opacity-60 hover:opacity-100'
                 }`}
               >
                 <User className="w-4 h-4" />
@@ -327,8 +327,10 @@ export default function TriagePage() {
               </button>
               <button
                 onClick={() => setPatientType('pediatric')}
+                role="radio"
+                aria-checked={patientType === 'pediatric'}
                 className={`flex-1 py-3 rounded-full text-sm font-bold flex items-center justify-center gap-2 transition-all ${
-                  patientType === 'pediatric' ? 'bg-white text-black shadow' : 'text-white/60 hover:text-white'
+                  patientType === 'pediatric' ? 'bg-black text-white dark:bg-white dark:text-black shadow' : 'opacity-60 hover:opacity-100'
                 }`}
               >
                 <Baby className="w-4 h-4" />
@@ -336,8 +338,7 @@ export default function TriagePage() {
               </button>
             </div>
 
-            {/* Main Feature Card (Coral) */}
-            <div className="feat-card feat-card-coral p-6 space-y-4">
+            <div className="feat-card feat-card-coral leaf-card-left p-6 space-y-4">
               <div className="card-handle" />
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider opacity-70">
@@ -351,7 +352,7 @@ export default function TriagePage() {
                 </p>
               </div>
 
-              <div className="space-y-2 pt-2 border-t border-white/20 text-xs font-semibold">
+              <div className="space-y-2 pt-2 border-t border-current/20 text-xs font-semibold">
                 <div className="flex items-center gap-2">
                   <div className="w-2.5 h-2.5 rounded-full bg-[#A8D672]" />
                   <span>GREEN — Minor (Walking Wounded)</span>
@@ -371,10 +372,9 @@ export default function TriagePage() {
               </div>
             </div>
 
-            {/* Start Button (Yellow Accent) */}
             <button
               onClick={handleStart}
-              className="feat-card feat-card-yellow p-5 flex items-center justify-between font-extrabold text-lg text-black active:scale-[0.98] transition-transform w-full shadow-lg"
+              className="feat-card feat-card-yellow leaf-card-right p-5 flex items-center justify-between font-extrabold text-lg text-black active:scale-[0.98] transition-transform w-full shadow-lg"
             >
               <span>Begin Rapid Assessment</span>
               <div className="w-9 h-9 rounded-full bg-black/10 flex items-center justify-center">
@@ -384,10 +384,9 @@ export default function TriagePage() {
           </div>
         )}
 
-        {/* ACTIVE QUESTION STEP */}
         {currentStep && !result && (
           <div className="animate-card-in space-y-4" key={currentStepId}>
-            <div className="feat-card feat-card-cream p-7 space-y-4">
+            <div className="feat-card feat-card-cream leaf-card-full p-7 space-y-4">
               <div className="card-handle" style={{ background: 'rgba(0,0,0,0.15)' }} />
               <div className="flex items-center justify-between">
                 <span className="text-xs font-bold uppercase tracking-wider text-black/50">
@@ -409,11 +408,10 @@ export default function TriagePage() {
               )}
             </div>
 
-            {/* YES & NO buttons styled like design cards */}
             <div className="grid grid-cols-1 gap-3 pt-2">
               <button
                 onClick={() => handleAnswer('yes')}
-                className="feat-card feat-card-green p-5 flex items-center justify-between text-black font-extrabold text-lg transition-transform active:scale-[0.98]"
+                className="feat-card feat-card-green leaf-card-left p-5 flex items-center justify-between text-black font-extrabold text-lg transition-transform active:scale-[0.98]"
               >
                 <span>{currentStep.yesLabel ?? 'Yes'}</span>
                 <div className="w-9 h-9 rounded-full bg-black/10 flex items-center justify-center">
@@ -423,19 +421,17 @@ export default function TriagePage() {
 
               <button
                 onClick={() => handleAnswer('no')}
-                className="feat-card p-5 flex items-center justify-between text-white font-extrabold text-lg transition-transform active:scale-[0.98]"
-                style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
+                className="feat-card leaf-card-right p-5 flex items-center justify-between text-current font-extrabold text-lg transition-transform active:scale-[0.98] border border-current/20 bg-white/10"
               >
                 <span>{currentStep.noLabel ?? 'No'}</span>
-                <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center">
-                  <ChevronRight className="w-5 h-5 text-white" strokeWidth={2.5} />
+                <div className="w-9 h-9 rounded-full bg-current/10 flex items-center justify-center">
+                  <ChevronRight className="w-5 h-5 text-current" strokeWidth={2.5} />
                 </div>
               </button>
             </div>
           </div>
         )}
 
-        {/* TRIAGE RESULT SCREEN */}
         {result && (
           <div className="animate-card-in space-y-4">
             {(() => {
@@ -463,14 +459,13 @@ export default function TriagePage() {
                   <div className="flex gap-3 pt-2">
                     <button
                       onClick={handleReset}
-                      className="feat-card feat-card-yellow flex-1 p-4 text-center font-bold text-black text-base active:scale-[0.98] transition-transform"
+                      className="feat-card feat-card-yellow leaf-card-left flex-1 p-4 text-center font-bold text-black text-base active:scale-[0.98] transition-transform"
                     >
                       Next Patient
                     </button>
                     <button
                       onClick={() => router.back()}
-                      className="feat-card flex-1 p-4 text-center font-bold text-white text-base active:scale-[0.98] transition-transform"
-                      style={{ background: 'rgba(255,255,255,0.12)', border: '1px solid rgba(255,255,255,0.18)' }}
+                      className="feat-card leaf-card-right flex-1 p-4 text-center font-bold text-current text-base active:scale-[0.98] transition-transform border border-current/20 bg-white/10"
                     >
                       Home
                     </button>
@@ -480,7 +475,7 @@ export default function TriagePage() {
             })()}
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 }

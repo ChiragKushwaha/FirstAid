@@ -34,7 +34,7 @@ test.describe('FieldAid Home Page & Onboarding Disclaimer', () => {
 
     await page.goto('/');
 
-    const helpBtn = page.getByRole('button', { name: /App Disclaimer & Info/i }).first();
+    const helpBtn = page.getByRole('button', { name: /App Disclaimer/i }).first();
     await expect(helpBtn).toBeVisible();
     await helpBtn.click();
 

@@ -10,10 +10,10 @@ import {
   Volume2,
   Eye,
   AlertTriangle,
-  RotateCcw,
 } from 'lucide-react';
 import { startCPRMetronome, stopCPRMetronome } from '@/lib/audio-engine';
 import { requestWakeLock, releaseWakeLock } from '@/lib/wake-lock';
+import ThemeToggle from '@/components/ThemeToggle';
 
 type CPRMode = '30:2' | '15:2';
 
@@ -34,6 +34,11 @@ export default function CPRPage() {
   const elapsedRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const breathTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const announce = (text: string) => {
+    const el = document.getElementById('aria-announcer');
+    if (el) el.textContent = text;
+  };
+
   const triggerPulse = useCallback(() => {
     setPulseActive(true);
     setTimeout(() => setPulseActive(false), 220);
@@ -45,6 +50,7 @@ export default function CPRPage() {
     setPhase('compress');
     setElapsed(0);
     startTimeRef.current = Date.now();
+    announce('CPR Metronome Started at 110 BPM');
 
     const wl = await requestWakeLock();
     if (wl.fallbackMessage) setWakeLockMsg(wl.fallbackMessage);
@@ -59,11 +65,13 @@ export default function CPRPage() {
       onBeat: (beatNum) => {
         setCount(beatNum);
         setPhase('compress');
+        announce(`${beatNum}`);
       },
       onBreath: (breathCount, duration) => {
         setPhase('breathe');
         setBreathCountdown(duration);
         setCycleCount((c) => c + 1);
+        announce(`Give 2 rescue breaths`);
 
         let remaining = duration;
         const tick = () => {
@@ -90,6 +98,7 @@ export default function CPRPage() {
     if (elapsedRef.current) clearInterval(elapsedRef.current);
     if (breathTimerRef.current) clearTimeout(breathTimerRef.current);
     setPhase('compress');
+    announce('CPR Metronome Stopped');
   };
 
   useEffect(() => {
@@ -110,66 +119,70 @@ export default function CPRPage() {
   const isBreathing = phase === 'breathe';
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white pb-12">
+    <div className="flex flex-col min-h-screen bg-canvas text-main pb-12">
       {/* ── Header ── */}
-      <div className="flex items-center justify-between px-6 pt-14 pb-4">
+      <header className="flex items-center justify-between px-6 pt-14 pb-4">
         <button
           onClick={() => { handleStop(); router.back(); }}
-          className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95"
-          style={{ background: 'rgba(255,255,255,0.12)' }}
-          aria-label="Back"
+          className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95 border border-current/15 bg-white/10 text-current hover:bg-white/20"
+          aria-label="Go Back"
         >
-          <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2} />
+          <ArrowLeft className="w-5 h-5" strokeWidth={2} />
         </button>
 
         <div className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-white/50">PRD 110 BPM Metronome</p>
-          <h1 className="text-base font-bold text-white">CPR Guide &amp; Pacer</h1>
+          <p className="text-xs font-semibold uppercase tracking-widest opacity-50">PRD 110 BPM Metronome</p>
+          <h1 className="text-base font-bold">CPR Guide &amp; Pacer</h1>
         </div>
 
-        <button
-          onClick={() => setVisualOnly((v) => !v)}
-          className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
-            visualOnly ? 'bg-[#F7D44C] text-black' : 'bg-white/10 text-white/70 hover:text-white'
-          }`}
-          aria-label="Visual Mode"
-        >
-          <Eye className="w-5 h-5" />
-        </button>
-      </div>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <button
+            onClick={() => setVisualOnly((v) => !v)}
+            className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
+              visualOnly ? 'bg-[#F7D44C] text-black' : 'bg-white/10 text-current hover:bg-white/20'
+            }`}
+            aria-label="Visual Silent Mode"
+            title="Toggle Visual Silent Mode"
+          >
+            <Eye className="w-5 h-5" />
+          </button>
+        </div>
+      </header>
 
       {wakeLockMsg && (
         <div className="mx-6 mb-3 p-3 bg-[#EB7A53]/20 border border-[#EB7A53]/40 rounded-2xl flex items-center gap-2">
           <AlertTriangle className="w-4 h-4 text-[#EB7A53]" />
-          <p className="text-xs font-medium text-white/80">{wakeLockMsg}</p>
+          <p className="text-xs font-medium">{wakeLockMsg}</p>
         </div>
       )}
 
-      {/* Mode Ratio Toggles (PRD Section 3.4) */}
       {!isRunning && (
-        <div className="px-6 mb-6">
+        <nav className="px-6 mb-6" aria-label="CPR Ratio Selection">
           <div
-            className="p-1.5 rounded-full flex gap-1"
-            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+            className="p-1.5 rounded-full flex gap-1 bg-current/10 border border-current/15"
+            role="radiogroup"
+            aria-label="CPR Ratio Mode"
           >
             {(['30:2', '15:2'] as const).map((m) => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
+                role="radio"
+                aria-checked={mode === m}
                 className={`flex-1 py-3 rounded-full text-xs font-extrabold transition-all ${
-                  mode === m ? 'bg-white text-black shadow' : 'text-white/60 hover:text-white'
+                  mode === m ? 'bg-black text-white dark:bg-white dark:text-black shadow' : 'opacity-60 hover:opacity-100'
                 }`}
               >
                 {m === '30:2' ? '30:2 (Adult / Single Rescuer)' : '15:2 (Child / 2 Rescuers)'}
               </button>
             ))}
           </div>
-        </div>
+        </nav>
       )}
 
-      {/* ── Main Metronome Visualizer ── */}
-      <div className="flex-1 px-6 flex flex-col items-center justify-center">
-        <div className="relative flex items-center justify-center mb-6">
+      <main className="flex-1 px-6 flex flex-col items-center justify-center">
+        <div className="relative flex items-center justify-center mb-6" role="status" aria-live="polite">
           <div
             className={`w-56 h-56 rounded-full flex flex-col items-center justify-center transition-all duration-150 ${
               isRunning
@@ -178,7 +191,7 @@ export default function CPRPage() {
                   : pulseActive
                   ? 'bg-[#F7D44C] text-black scale-105 shadow-2xl'
                   : 'bg-[#EB7A53] text-white shadow-xl scale-100'
-                : 'bg-white/10 text-white/40 border border-white/15'
+                : 'bg-white/10 text-current/40 border border-current/15'
             }`}
           >
             {isRunning ? (
@@ -201,14 +214,13 @@ export default function CPRPage() {
               )
             ) : (
               <>
-                <HeartPulse className="w-20 h-20 text-white/30" strokeWidth={1.5} />
-                <span className="text-xs font-bold uppercase tracking-widest mt-2 text-white/50">110 BPM Metronome</span>
+                <HeartPulse className="w-20 h-20 opacity-30" strokeWidth={1.5} />
+                <span className="text-xs font-bold uppercase tracking-widest mt-2 opacity-50">110 BPM Metronome</span>
               </>
             )}
           </div>
         </div>
 
-        {/* CPR Stats & Cycle Counter Card (PRD Section 3.4 Requirement) */}
         <div className="feat-card feat-card-cream leaf-card-full w-full p-5 mb-5">
           <div className="card-handle" style={{ background: 'rgba(0,0,0,0.15)' }} />
           <div className="grid grid-cols-4 gap-1 text-center text-black">
@@ -231,10 +243,10 @@ export default function CPRPage() {
           </div>
         </div>
 
-        {/* Start / Stop Button */}
         <button
           onClick={isRunning ? handleStop : handleStart}
           className={`feat-card ${isRunning ? 'feat-card-coral' : 'feat-card-yellow'} leaf-card-right w-full p-5 flex items-center justify-center gap-3 font-extrabold text-xl active:scale-[0.98] transition-transform shadow-xl`}
+          aria-label={isRunning ? 'Stop CPR Metronome' : 'Start 110 BPM CPR Metronome'}
         >
           {isRunning ? (
             <>
@@ -248,7 +260,7 @@ export default function CPRPage() {
             </>
           )}
         </button>
-      </div>
+      </main>
     </div>
   );
 }

@@ -1,8 +1,19 @@
 @import "tailwindcss";
 
-/* ─── Design System Tokens ─── */
-:root {
-  --black:   #000000;
+/* ─── Design Tokens & Themes ─── */
+:root,
+:root[data-theme="dark"] {
+  --black:        #000000;
+  --canvas-bg:    #000000;
+  --text-main:    #FFFFFF;
+  --text-sub:     rgba(255, 255, 255, 0.6);
+  --header-bg:    rgba(255, 255, 255, 0.1);
+  --header-border:rgba(255, 255, 255, 0.18);
+  --pill-bg:      transparent;
+  --pill-border:  rgba(255, 255, 255, 0.2);
+  --pill-active-bg: rgba(255, 255, 255, 0.2);
+  --card-handle-bg: rgba(0, 0, 0, 0.18);
+
   --yellow:  #F7D44C;
   --coral:   #EB7A53;
   --blue:    #98B7DB;
@@ -11,6 +22,26 @@
   --white:   #FFFFFF;
 
   --font-main: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+:root[data-theme="light"] {
+  --black:        #1A1A1A;
+  --canvas-bg:    #F6ECC9;
+  --text-main:    #000000;
+  --text-sub:     rgba(0, 0, 0, 0.65);
+  --header-bg:    rgba(0, 0, 0, 0.06);
+  --header-border:rgba(0, 0, 0, 0.12);
+  --pill-bg:      rgba(0, 0, 0, 0.05);
+  --pill-border:  rgba(0, 0, 0, 0.25);
+  --pill-active-bg: #000000;
+  --card-handle-bg: rgba(0, 0, 0, 0.25);
+
+  --yellow:  #F5D13B;
+  --coral:   #E86A41;
+  --blue:    #82A9DA;
+  --green:   #96C85E;
+  --cream:   #EDE1B6;
+  --white:   #FFFFFF;
 }
 
 @layer base {
@@ -26,31 +57,43 @@
 
   body {
     font-family: var(--font-main);
-    background-color: var(--black);
-    color: var(--white);
+    background-color: var(--canvas-bg);
+    color: var(--text-main);
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
-  button, a, [role="button"] {
+  /* WCAG 2.1 AAA 48x48px Minimum Touch Targets */
+  button, a, [role="button"], input, select {
     min-height: 48px;
     min-width: 48px;
   }
+
+  /* WCAG High-Contrast Focus Visible Rings for Keyboard Nav */
+  :focus-visible {
+    outline: 3px solid #F7D44C !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 0 5px #000000 !important;
+  }
+
+  :root[data-theme="light"] :focus-visible {
+    outline: 3px solid #000000 !important;
+    outline-offset: 3px !important;
+    box-shadow: 0 0 0 5px #F7D44C !important;
+  }
 }
 
-/* ─── Asymmetric Leaf-Shaped Cards ─── */
-.leaf-card-left {
-  border-radius: 40px 16px 40px 40px;
+.bg-canvas {
+  background-color: var(--canvas-bg);
+  color: var(--text-main);
 }
 
-.leaf-card-right {
-  border-radius: 16px 40px 40px 40px;
-}
-
-.leaf-card-full {
-  border-radius: 36px 36px 16px 36px;
-}
+/* ─── Leaf-Shaped Cards ─── */
+.leaf-card-left  { border-radius: 40px 16px 40px 40px; }
+.leaf-card-right { border-radius: 16px 40px 40px 40px; }
+.leaf-card-full  { border-radius: 36px 36px 16px 36px; }
 
 .feat-card {
   padding: 24px;
@@ -68,24 +111,22 @@
 }
 
 .feat-card-coral  { background: var(--coral); color: var(--white); }
-.feat-card-yellow { background: var(--yellow); color: var(--black); }
-.feat-card-cream  { background: var(--cream); color: var(--black); }
-.feat-card-blue   { background: var(--blue); color: var(--black); }
-.feat-card-green  { background: var(--green); color: var(--black); }
+.feat-card-yellow { background: var(--yellow); color: #000000; }
+.feat-card-cream  { background: var(--cream); color: #000000; }
+.feat-card-blue   { background: var(--blue); color: #000000; }
+.feat-card-green  { background: var(--green); color: #000000; }
 
-/* Color overrides for card typography */
 .feat-card-yellow *,
 .feat-card-cream  *,
 .feat-card-green  *,
 .feat-card-blue   * {
-  color: var(--black);
+  color: #000000 !important;
 }
 
 .feat-card-coral * {
-  color: var(--white);
+  color: var(--white) !important;
 }
 
-/* Handle line on top center of cards */
 .card-handle {
   width: 36px;
   height: 4px;
@@ -100,8 +141,8 @@
 
 /* ─── Favorite Heart Button ─── */
 .fav-btn {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.25);
   display: flex;
@@ -127,11 +168,11 @@
   gap: 8px;
   padding: 10px 22px;
   border-radius: 999px;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border: 1.5px solid var(--pill-border);
   font-size: 0.95rem;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.65);
-  background: transparent;
+  color: var(--text-sub);
+  background: var(--pill-bg);
   cursor: pointer;
   transition: all 0.2s ease;
   white-space: nowrap;
@@ -139,18 +180,28 @@
 }
 
 .pill.active {
-  background: transparent;
-  border-color: var(--white);
-  color: var(--white);
+  border-color: var(--text-main);
+  color: var(--text-main);
+}
+
+:root[data-theme="light"] .pill.active {
+  background: #000000;
+  border-color: #000000;
+  color: #FFFFFF;
 }
 
 .pill .count {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--white);
+  background: var(--pill-active-bg);
+  color: var(--text-main);
   font-size: 0.75rem;
   font-weight: 700;
   padding: 2px 8px;
   border-radius: 999px;
+}
+
+:root[data-theme="light"] .pill.active .count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
 }
 
 /* ─── Floating Dock ─── */
@@ -169,15 +220,21 @@
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: var(--black);
+  background: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
   cursor: pointer;
   transition: transform 0.15s ease;
+}
+
+:root[data-theme="light"] .fab-plus {
+  background: #000000;
+  color: #FFFFFF;
+  border-color: rgba(0, 0, 0, 0.3);
 }
 
 .fab-plus:active { transform: scale(0.92); }
@@ -186,16 +243,22 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #FFFFFF;
   cursor: pointer;
   transition: background 0.15s ease;
+}
+
+:root[data-theme="light"] .fab-mic-dock {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.2);
+  color: #000000;
 }
 
 .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -205,4 +268,14 @@
   position: absolute; width: 1px; height: 1px;
   padding: 0; margin: -1px; overflow: hidden;
   clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
+}
+
+/* ─── WCAG Reduced Motion Compliance ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

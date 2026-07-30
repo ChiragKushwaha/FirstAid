@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Search, AlertTriangle, Pill, Info, Check } from 'lucide-react';
+import { ArrowLeft, Search, AlertTriangle, Check } from 'lucide-react';
 import drugsData from '@/data/drugs.json';
 import { calculateDose, convertLbsToKg, type Drug, type DoseResult } from '@/lib/dose-calculator';
+import ThemeToggle from '@/components/ThemeToggle';
 
 type WeightUnit = 'kg' | 'lbs';
 type AgeCategory = 'Infant' | 'Child' | 'Adult';
@@ -30,7 +31,12 @@ export default function DosagePage() {
 
   useEffect(() => {
     if (selectedDrug && weightKg) {
-      setResult(calculateDose(weightKg, selectedDrug));
+      const res = calculateDose(weightKg, selectedDrug);
+      setResult(res);
+      const announcer = document.getElementById('aria-announcer');
+      if (announcer) {
+        announcer.textContent = `Calculated dose for ${selectedDrug.generic_name}: ${res.displayDose} (${res.finalDoseMg} mg)`;
+      }
     } else {
       setResult(null);
     }
@@ -50,34 +56,33 @@ export default function DosagePage() {
   }, [searchQuery, category]);
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-white pb-12">
-      {/* ── Top Header ── */}
-      <div className="flex items-center justify-between px-6 pt-14 pb-4">
+    <div className="flex flex-col min-h-screen bg-canvas text-main pb-12">
+      {/* ── Header ── */}
+      <header className="flex items-center justify-between px-6 pt-14 pb-4">
         <button
           onClick={() => router.back()}
-          className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95"
-          style={{ background: 'rgba(255,255,255,0.12)' }}
-          aria-label="Back"
+          className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95 border border-current/15 bg-white/10 text-current hover:bg-white/20"
+          aria-label="Go Back"
         >
-          <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2} />
+          <ArrowLeft className="w-5 h-5" strokeWidth={2} />
         </button>
 
         <div className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-white/50">PRD Formula Calculator</p>
-          <h1 className="text-base font-bold text-white">Dosage Calculator</h1>
+          <p className="text-xs font-semibold uppercase tracking-widest opacity-50">PRD Formula Calculator</p>
+          <h1 className="text-base font-bold">Dosage Calculator</h1>
         </div>
 
-        <div className="w-11" />
-      </div>
+        <ThemeToggle />
+      </header>
 
-      <div className="px-6 flex-1 space-y-4">
+      <main className="px-6 flex-1 space-y-4">
         {/* ── Weight & Age Input Card (Yellow Leaf Card) ── */}
-        <div className="feat-card feat-card-yellow leaf-card-left p-6 space-y-3">
+        <section className="feat-card feat-card-yellow leaf-card-left p-6 space-y-3" aria-label="Patient Weight and Age Group">
           <div className="card-handle" style={{ background: 'rgba(0,0,0,0.15)' }} />
           <div className="flex items-center justify-between text-black">
-            <span className="text-xs font-extrabold uppercase tracking-wider text-black/60">
+            <label htmlFor="weight-input" className="text-xs font-extrabold uppercase tracking-wider text-black/60">
               1. Patient Weight &amp; Group
-            </span>
+            </label>
             {weightKg && (
               <span className="text-xs font-extrabold bg-black/10 px-2.5 py-1 rounded-full">
                 {weightKg} kg
@@ -85,12 +90,17 @@ export default function DosagePage() {
             )}
           </div>
 
-          {/* Age selector (Infant, Child, Adult PRD requirement 3.3) */}
-          <div className="bg-black/10 p-1 rounded-2xl flex gap-1 items-center">
+          <div
+            className="bg-black/10 p-1 rounded-2xl flex gap-1 items-center"
+            role="radiogroup"
+            aria-label="Patient Age Group"
+          >
             {(['Infant', 'Child', 'Adult'] as const).map((cat) => (
               <button
                 key={cat}
                 onClick={() => setAgeCategory(cat)}
+                role="radio"
+                aria-checked={ageCategory === cat}
                 className={`flex-1 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
                   ageCategory === cat ? 'bg-black text-white' : 'text-black/60 hover:text-black'
                 }`}
@@ -102,18 +112,26 @@ export default function DosagePage() {
 
           <div className="flex gap-2">
             <input
+              id="weight-input"
               type="number"
               inputMode="decimal"
               value={weightValue}
               onChange={(e) => setWeightValue(e.target.value)}
               placeholder="Enter weight"
               className="flex-1 min-w-0 h-14 bg-white/40 text-black placeholder:text-black/40 font-black text-2xl px-4 rounded-2xl border-none focus:outline-none"
+              aria-label="Patient Weight"
             />
-            <div className="bg-black/10 p-1 rounded-2xl flex gap-1 items-center flex-shrink-0">
+            <div
+              className="bg-black/10 p-1 rounded-2xl flex gap-1 items-center flex-shrink-0"
+              role="radiogroup"
+              aria-label="Weight Unit"
+            >
               {(['kg', 'lbs'] as const).map((u) => (
                 <button
                   key={u}
                   onClick={() => setWeightUnit(u)}
+                  role="radio"
+                  aria-checked={weightUnit === u}
                   className={`px-3.5 h-12 rounded-xl text-xs font-extrabold transition-all ${
                     weightUnit === u ? 'bg-black text-white' : 'text-black/60 hover:text-black'
                   }`}
@@ -123,15 +141,15 @@ export default function DosagePage() {
               ))}
             </div>
           </div>
-        </div>
+        </section>
 
         {/* ── Drug Selection Card (Cream Leaf Card) ── */}
-        <div className="feat-card feat-card-cream leaf-card-full p-6 space-y-4">
+        <section className="feat-card feat-card-cream leaf-card-full p-6 space-y-4" aria-label="Select Medication">
           <div className="card-handle" style={{ background: 'rgba(0,0,0,0.15)' }} />
           <div className="text-black">
-            <span className="text-xs font-extrabold uppercase tracking-wider text-black/60">
+            <label htmlFor="drug-search" className="text-xs font-extrabold uppercase tracking-wider text-black/60">
               2. Select Pre-Loaded Drug
-            </span>
+            </label>
             {selectedDrug && (
               <p className="text-lg font-black mt-1 text-black">
                 {selectedDrug.generic_name}
@@ -142,15 +160,17 @@ export default function DosagePage() {
           <div className="relative">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-black/50" />
             <input
+              id="drug-search"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search generic / brand..."
               className="w-full h-11 bg-black/5 text-black placeholder:text-black/40 font-semibold text-sm pl-10 pr-4 rounded-xl focus:outline-none"
+              aria-label="Search Drugs"
             />
           </div>
 
-          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1" aria-label="Drug Category Filter">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
@@ -160,19 +180,22 @@ export default function DosagePage() {
                     ? 'bg-black text-white'
                     : 'bg-black/5 text-black/60 hover:text-black'
                 }`}
+                aria-pressed={category === cat}
               >
                 {cat}
               </button>
             ))}
           </div>
 
-          <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+          <div className="space-y-2 max-h-48 overflow-y-auto pr-1" role="listbox" aria-label="Medications List">
             {filteredDrugs.map((drug) => {
               const isSelected = selectedDrug?.drug_id === drug.drug_id;
               return (
                 <button
                   key={drug.drug_id}
                   onClick={() => setSelectedDrug(drug)}
+                  role="option"
+                  aria-selected={isSelected}
                   className={`w-full flex items-center justify-between p-3 rounded-2xl text-left transition-all ${
                     isSelected ? 'bg-black text-white shadow' : 'bg-black/5 text-black hover:bg-black/10'
                   }`}
@@ -188,11 +211,11 @@ export default function DosagePage() {
               );
             })}
           </div>
-        </div>
+        </section>
 
         {/* ── Dose Result Card (Coral Leaf Card) ── */}
         {result && selectedDrug && weightKg && (
-          <div className="feat-card feat-card-coral leaf-card-right p-6 space-y-4 animate-card-in">
+          <section className="feat-card feat-card-coral leaf-card-right p-6 space-y-4 animate-card-in" aria-live="polite" aria-label="Dosage Result">
             <div className="card-handle" />
             <div>
               <span className="text-xs font-bold uppercase tracking-widest opacity-70">
@@ -206,7 +229,6 @@ export default function DosagePage() {
               </p>
             </div>
 
-            {/* Formula Breakdown as per PRD Section 3.3 math */}
             <div className="p-3 bg-black/20 rounded-2xl text-[11px] font-bold text-white/90">
               Volume = ({weightKg} kg × {selectedDrug.dosing_rules.mg_per_kg_default} mg/kg) ÷ ({selectedDrug.standard_concentration.mg} mg / {selectedDrug.standard_concentration.ml} mL)
             </div>
@@ -217,9 +239,9 @@ export default function DosagePage() {
                 <span>Enforced Adult Upper Cap ({result.cappedAt?.toFixed(2)} mL max)</span>
               </div>
             )}
-          </div>
+          </section>
         )}
-      </div>
+      </main>
     </div>
   );
 }
