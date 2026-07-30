@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0A0E1A',
+  themeColor: '#000000',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -34,17 +34,20 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* Outfit & Plus Jakarta Sans — closest 1:1 match to Lufga font */}
         {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
           rel="stylesheet"
         />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
       </head>
-      <body className="bg-gray-950 text-white font-sans antialiased select-none overflow-x-hidden">
-        {/* ARIA live region for screen reader announcements */}
+      <body
+        style={{ fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif" }}
+        className="bg-black text-white antialiased select-none overflow-x-hidden"
+      >
         <div
           role="status"
           aria-live="assertive"
@@ -52,7 +55,7 @@ export default function RootLayout({
           className="sr-only"
           id="aria-announcer"
         />
-        <div className="min-h-screen flex flex-col max-w-md mx-auto relative">
+        <div className="min-h-screen flex flex-col max-w-md mx-auto relative bg-black">
           {children}
         </div>
       </body>

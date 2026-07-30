@@ -1,14 +1,23 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-space: 'Space Grotesk', 'Inter', sans-serif;
-  }
+/* ─── Design System Tokens ─── */
+:root {
+  --black:   #000000;
+  --yellow:  #F7D44C;
+  --coral:   #EB7A53;
+  --blue:    #98B7DB;
+  --green:   #A8D672;
+  --cream:   #F6ECC9;
+  --white:   #FFFFFF;
 
+  --font-main: 'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+@layer base {
   * {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
+    box-sizing: border-box;
   }
 
   html {
@@ -16,171 +25,184 @@
   }
 
   body {
-    font-family: var(--font-inter), system-ui, sans-serif;
-    background-color: #030712;
-    color: #f9fafb;
+    font-family: var(--font-main);
+    background-color: var(--black);
+    color: var(--white);
     overscroll-behavior: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Ensure minimum touch targets WCAG 2.1 AAA */
   button, a, [role="button"] {
     min-height: 48px;
     min-width: 48px;
   }
 }
 
-/* ─── Emergency Color System ─── */
-@layer utilities {
-  .triage-red {
-    background-color: #2D1515;
-    border-color: #DC2626;
-    color: #FCA5A5;
-  }
-
-  .triage-yellow {
-    background-color: #2D2410;
-    border-color: #F59E0B;
-    color: #FDE68A;
-  }
-
-  .triage-green {
-    background-color: #0D2117;
-    border-color: #10B981;
-    color: #6EE7B7;
-  }
-
-  .triage-black {
-    background-color: #111827;
-    border-color: #6B7280;
-    color: #D1D5DB;
-  }
+/* ─── Asymmetric Leaf-Shaped Cards ─── */
+.leaf-card-left {
+  border-radius: 40px 16px 40px 40px;
 }
 
-/* ─── CPR Pulse Animation ─── */
-@keyframes cpr-pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.08);
-    opacity: 0.85;
-  }
+.leaf-card-right {
+  border-radius: 16px 40px 40px 40px;
 }
 
-@keyframes cpr-ring-expand {
-  0% {
-    transform: scale(0.9);
-    opacity: 0.8;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
+.leaf-card-full {
+  border-radius: 36px 36px 16px 36px;
 }
 
-@keyframes border-flash {
-  0%, 100% { box-shadow: inset 0 0 0 4px transparent; }
-  50% { box-shadow: inset 0 0 0 8px #DC2626; }
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.animate-cpr-pulse {
-  animation: cpr-pulse 0.545s ease-in-out;
-}
-
-.animate-cpr-ring {
-  animation: cpr-ring-expand 0.545s ease-out forwards;
-}
-
-.animate-border-flash {
-  animation: border-flash 0.545s ease-in-out;
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.4s ease-out forwards;
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right 0.35s ease-out forwards;
-}
-
-.animate-breathe {
-  animation: breathe 4s ease-in-out infinite;
-}
-
-/* ─── Glassmorphism Cards ─── */
-.glass-card {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-}
-
-.glass-card-elevated {
-  background: rgba(255, 255, 255, 0.07);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 20px;
-}
-
-/* ─── Custom Scrollbar ─── */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 2px;
-}
-
-/* ─── Screen Reader Only ─── */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
+.feat-card {
+  padding: 24px;
+  position: relative;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+}
+
+.feat-card:active {
+  transform: scale(0.97);
+}
+
+.feat-card-coral  { background: var(--coral); color: var(--white); }
+.feat-card-yellow { background: var(--yellow); color: var(--black); }
+.feat-card-cream  { background: var(--cream); color: var(--black); }
+.feat-card-blue   { background: var(--blue); color: var(--black); }
+.feat-card-green  { background: var(--green); color: var(--black); }
+
+/* Color overrides for card typography */
+.feat-card-yellow *,
+.feat-card-cream  *,
+.feat-card-green  *,
+.feat-card-blue   * {
+  color: var(--black);
+}
+
+.feat-card-coral * {
+  color: var(--white);
+}
+
+/* Handle line on top center of cards */
+.card-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 99px;
+  background: rgba(0, 0, 0, 0.18);
+  margin: 0 auto 12px;
+}
+
+.feat-card-coral .card-handle {
+  background: rgba(255, 255, 255, 0.35);
+}
+
+/* ─── Favorite Heart Button ─── */
+.fav-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border: none;
+  flex-shrink: 0;
+}
+
+.fav-btn-dark {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.fav-btn:hover { background: rgba(255, 255, 255, 0.4); }
+.fav-btn-dark:hover { background: rgba(0, 0, 0, 0.15); }
+
+/* ─── Filter Pills ─── */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.65);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
   white-space: nowrap;
-  border-width: 0;
+  flex-shrink: 0;
+}
+
+.pill.active {
+  background: transparent;
+  border-color: var(--white);
+  color: var(--white);
+}
+
+.pill .count {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--white);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* ─── Floating Dock ─── */
+.floating-dock {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fab-plus {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: white;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.fab-plus:active { transform: scale(0.92); }
+
+.fab-mic-dock {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0,0,0,0); white-space: nowrap; border-width: 0;
 }

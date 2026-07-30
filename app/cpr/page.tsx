@@ -7,10 +7,10 @@ import {
   HeartPulse,
   Play,
   Square,
-  RefreshCw,
   Volume2,
   Eye,
   AlertTriangle,
+  RotateCcw,
 } from 'lucide-react';
 import { startCPRMetronome, stopCPRMetronome } from '@/lib/audio-engine';
 import { requestWakeLock, releaseWakeLock } from '@/lib/wake-lock';
@@ -22,41 +22,21 @@ export default function CPRPage() {
   const [isRunning, setIsRunning] = useState(false);
   const [mode, setMode] = useState<CPRMode>('30:2');
   const [count, setCount] = useState(0);
+  const [cycleCount, setCycleCount] = useState(0);
   const [phase, setPhase] = useState<'compress' | 'breathe'>('compress');
   const [breathCountdown, setBreathCountdown] = useState(0);
   const [pulseActive, setPulseActive] = useState(false);
-  const [ringActive, setRingActive] = useState(false);
   const [wakeLockMsg, setWakeLockMsg] = useState<string | null>(null);
   const [elapsed, setElapsed] = useState(0);
   const [visualOnly, setVisualOnly] = useState(false);
-  const [batteryLow, setBatteryLow] = useState(false);
 
   const startTimeRef = useRef<number | null>(null);
   const elapsedRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const breathTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Check battery on mount
-  useEffect(() => {
-    if ('getBattery' in navigator) {
-      (navigator as any).getBattery().then((battery: any) => {
-        setBatteryLow(battery.level < 0.1);
-        battery.addEventListener('levelchange', () => {
-          setBatteryLow(battery.level < 0.1);
-        });
-      }).catch(() => {});
-    }
-  }, []);
-
-  const announce = (text: string) => {
-    const el = document.getElementById('aria-announcer');
-    if (el) el.textContent = text;
-  };
-
   const triggerPulse = useCallback(() => {
     setPulseActive(true);
-    setRingActive(true);
-    setTimeout(() => setPulseActive(false), 200);
-    setTimeout(() => setRingActive(false), 545);
+    setTimeout(() => setPulseActive(false), 220);
   }, []);
 
   const handleStart = async () => {
@@ -66,11 +46,9 @@ export default function CPRPage() {
     setElapsed(0);
     startTimeRef.current = Date.now();
 
-    // Request wake lock
     const wl = await requestWakeLock();
     if (wl.fallbackMessage) setWakeLockMsg(wl.fallbackMessage);
 
-    // Start elapsed timer
     elapsedRef.current = setInterval(() => {
       if (startTimeRef.current) {
         setElapsed(Math.floor((Date.now() - startTimeRef.current) / 1000));
@@ -81,14 +59,12 @@ export default function CPRPage() {
       onBeat: (beatNum) => {
         setCount(beatNum);
         setPhase('compress');
-        announce(`${beatNum}`);
       },
       onBreath: (breathCount, duration) => {
         setPhase('breathe');
         setBreathCountdown(duration);
-        announce(`Give ${breathCount} rescue breaths`);
+        setCycleCount((c) => c + 1);
 
-        // Countdown
         let remaining = duration;
         const tick = () => {
           remaining -= 1;
@@ -134,204 +110,144 @@ export default function CPRPage() {
   const isBreathing = phase === 'breathe';
 
   return (
-    <div
-      className={`min-h-screen flex flex-col bg-gray-950 transition-all duration-75 ${
-        !batteryLow && pulseActive ? 'animate-border-flash' : ''
-      }`}
-      style={
-        !batteryLow && pulseActive
-          ? { boxShadow: 'inset 0 0 0 6px rgba(220,38,38,0.6)' }
-          : {}
-      }
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between px-5 pt-12 pb-4">
+    <div className="flex flex-col min-h-screen bg-black text-white pb-12">
+      {/* ── Header ── */}
+      <div className="flex items-center justify-between px-6 pt-14 pb-4">
         <button
           onClick={() => { handleStop(); router.back(); }}
-          className="w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-white transition-colors"
-          aria-label="Go back"
+          className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95"
+          style={{ background: 'rgba(255,255,255,0.12)' }}
+          aria-label="Back"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2} />
         </button>
+
         <div className="text-center">
-          <h1 className="text-white font-bold text-base">CPR Pacer</h1>
-          <p className="text-gray-500 text-xs">110 BPM · Web Audio</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-white/50">PRD 110 BPM Metronome</p>
+          <h1 className="text-base font-bold text-white">CPR Guide &amp; Pacer</h1>
         </div>
+
         <button
           onClick={() => setVisualOnly((v) => !v)}
-          className={`w-12 h-12 rounded-full glass-card flex items-center justify-center transition-colors ${
-            visualOnly ? 'text-amber-400' : 'text-gray-400 hover:text-white'
+          className={`w-11 h-11 rounded-full flex items-center justify-center transition-all ${
+            visualOnly ? 'bg-[#F7D44C] text-black' : 'bg-white/10 text-white/70 hover:text-white'
           }`}
-          aria-label="Toggle visual-only mode"
-          title="Visual pulse mode (for damaged speaker)"
+          aria-label="Visual Mode"
         >
           <Eye className="w-5 h-5" />
         </button>
       </div>
 
-      {/* Wake lock warning */}
       {wakeLockMsg && (
-        <div className="mx-5 mb-3 px-4 py-3 bg-amber-900/30 border border-amber-600/40 rounded-xl flex items-start gap-2">
-          <AlertTriangle className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
-          <p className="text-amber-300 text-xs leading-relaxed">{wakeLockMsg}</p>
+        <div className="mx-6 mb-3 p-3 bg-[#EB7A53]/20 border border-[#EB7A53]/40 rounded-2xl flex items-center gap-2">
+          <AlertTriangle className="w-4 h-4 text-[#EB7A53]" />
+          <p className="text-xs font-medium text-white/80">{wakeLockMsg}</p>
         </div>
       )}
 
-      {/* Mode selector */}
+      {/* Mode Ratio Toggles (PRD Section 3.4) */}
       {!isRunning && (
-        <div className="px-5 mb-6">
-          <div className="glass-card p-1.5 rounded-2xl flex gap-1">
+        <div className="px-6 mb-6">
+          <div
+            className="p-1.5 rounded-full flex gap-1"
+            style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
+          >
             {(['30:2', '15:2'] as const).map((m) => (
               <button
                 key={m}
                 onClick={() => setMode(m)}
-                className={`flex-1 py-3 rounded-xl text-sm font-bold transition-all duration-200 ${
-                  mode === m
-                    ? 'bg-white text-gray-950 shadow-sm'
-                    : 'text-gray-400 hover:text-white'
+                className={`flex-1 py-3 rounded-full text-xs font-extrabold transition-all ${
+                  mode === m ? 'bg-white text-black shadow' : 'text-white/60 hover:text-white'
                 }`}
               >
-                {m === '30:2' ? '👤 Adult 30:2' : '👶 Pediatric 15:2'}
+                {m === '30:2' ? '30:2 (Adult / Single Rescuer)' : '15:2 (Child / 2 Rescuers)'}
               </button>
             ))}
           </div>
-          <p className="text-center text-xs text-gray-600 mt-2">
-            {mode === '30:2'
-              ? 'Single rescuer · 30 compressions → 2 breaths'
-              : 'Two-rescuer · 15 compressions → 2 breaths'}
-          </p>
         </div>
       )}
 
-      {/* Main display */}
-      <div className="flex-1 flex flex-col items-center justify-center px-5">
-        {/* Pulse ring + circle */}
-        <div className="relative flex items-center justify-center mb-8">
-          {/* Expanding ring */}
-          {ringActive && !batteryLow && (
-            <div
-              className="absolute w-48 h-48 rounded-full border-2 border-red-500 animate-cpr-ring pointer-events-none"
-            />
-          )}
-
-          {/* Main circle */}
+      {/* ── Main Metronome Visualizer ── */}
+      <div className="flex-1 px-6 flex flex-col items-center justify-center">
+        <div className="relative flex items-center justify-center mb-6">
           <div
-            className={`w-48 h-48 rounded-full flex flex-col items-center justify-center transition-all duration-75 ${
+            className={`w-56 h-56 rounded-full flex flex-col items-center justify-center transition-all duration-150 ${
               isRunning
                 ? isBreathing
-                  ? 'bg-blue-900/60 border-4 border-blue-500 shadow-lg shadow-blue-900/50'
-                  : `bg-red-900/60 border-4 border-red-500 shadow-lg shadow-red-900/50 ${
-                      pulseActive ? 'scale-105' : 'scale-100'
-                    }`
-                : 'bg-gray-900 border-4 border-gray-700'
+                  ? 'bg-[#98B7DB] text-black shadow-2xl scale-105'
+                  : pulseActive
+                  ? 'bg-[#F7D44C] text-black scale-105 shadow-2xl'
+                  : 'bg-[#EB7A53] text-white shadow-xl scale-100'
+                : 'bg-white/10 text-white/40 border border-white/15'
             }`}
-            role="status"
-            aria-label={
-              isRunning
-                ? isBreathing
-                  ? `Give rescue breaths, ${breathCountdown} seconds remaining`
-                  : `Compression ${count}`
-                : 'CPR Pacer ready'
-            }
           >
             {isRunning ? (
               isBreathing ? (
                 <>
-                  <Volume2 className="w-10 h-10 text-blue-300 mb-2" />
-                  <span className="text-5xl font-black text-blue-200 font-mono">{breathCountdown}</span>
-                  <span className="text-blue-400 text-sm font-semibold mt-1">Breathe</span>
+                  <Volume2 className="w-10 h-10 text-black mb-1 animate-bounce" />
+                  <span className="text-6xl font-black font-mono leading-none">{breathCountdown}</span>
+                  <span className="text-xs font-extrabold uppercase tracking-widest mt-1">2 Rescue Breaths</span>
                 </>
               ) : (
                 <>
-                  <HeartPulse className="w-8 h-8 text-red-300 mb-1" />
-                  <span className="text-6xl font-black text-white font-mono leading-none">
+                  <HeartPulse className="w-10 h-10 text-current mb-1" />
+                  <span className="text-7xl font-black font-mono leading-none tracking-tight">
                     {count}
                   </span>
-                  <span className="text-red-400 text-xs font-semibold mt-1 uppercase tracking-wider">
-                    Compress
+                  <span className="text-xs font-extrabold uppercase tracking-widest mt-1">
+                    Push Hard &amp; Fast
                   </span>
                 </>
               )
             ) : (
-              <HeartPulse className="w-16 h-16 text-gray-600" strokeWidth={1.5} />
+              <>
+                <HeartPulse className="w-20 h-20 text-white/30" strokeWidth={1.5} />
+                <span className="text-xs font-bold uppercase tracking-widest mt-2 text-white/50">110 BPM Metronome</span>
+              </>
             )}
           </div>
         </div>
 
-        {/* Info strip */}
-        <div className="flex items-center gap-6 mb-8">
-          <div className="text-center">
-            <div className="text-2xl font-black text-white font-mono">
-              {isRunning ? formatElapsed(elapsed) : '00:00'}
+        {/* CPR Stats & Cycle Counter Card (PRD Section 3.4 Requirement) */}
+        <div className="feat-card feat-card-cream leaf-card-full w-full p-5 mb-5">
+          <div className="card-handle" style={{ background: 'rgba(0,0,0,0.15)' }} />
+          <div className="grid grid-cols-4 gap-1 text-center text-black">
+            <div>
+              <p className="text-[10px] font-bold text-black/50 uppercase tracking-wider">Elapsed</p>
+              <p className="text-xl font-black font-mono mt-0.5">{isRunning ? formatElapsed(elapsed) : '00:00'}</p>
             </div>
-            <div className="text-xs text-gray-500">Elapsed</div>
-          </div>
-          <div className="w-px h-8 bg-gray-800" />
-          <div className="text-center">
-            <div className="text-2xl font-black text-white">110</div>
-            <div className="text-xs text-gray-500">BPM</div>
-          </div>
-          <div className="w-px h-8 bg-gray-800" />
-          <div className="text-center">
-            <div className="text-2xl font-black text-white">{mode}</div>
-            <div className="text-xs text-gray-500">Mode</div>
+            <div className="border-l border-black/10">
+              <p className="text-[10px] font-bold text-black/50 uppercase tracking-wider">Rate</p>
+              <p className="text-xl font-black mt-0.5">110</p>
+            </div>
+            <div className="border-l border-black/10">
+              <p className="text-[10px] font-bold text-black/50 uppercase tracking-wider">Ratio</p>
+              <p className="text-xl font-black mt-0.5">{mode}</p>
+            </div>
+            <div className="border-l border-black/10">
+              <p className="text-[10px] font-bold text-black/50 uppercase tracking-wider">Cycles</p>
+              <p className="text-xl font-black mt-0.5">{cycleCount}</p>
+            </div>
           </div>
         </div>
 
-        {/* Phase label */}
-        {isRunning && (
-          <div
-            className={`px-6 py-3 rounded-full text-sm font-bold mb-6 transition-all ${
-              isBreathing
-                ? 'bg-blue-500/20 text-blue-300 border border-blue-500/40'
-                : 'bg-red-500/20 text-red-300 border border-red-500/40'
-            }`}
-          >
-            {isBreathing
-              ? `🫁 Give ${mode === '30:2' ? '2' : '2'} Rescue Breaths`
-              : '💪 Push Hard & Fast — 5 cm (2 inches)'}
-          </div>
-        )}
-
-        {/* Start / Stop button */}
+        {/* Start / Stop Button */}
         <button
           onClick={isRunning ? handleStop : handleStart}
-          className={`w-32 h-32 rounded-full flex flex-col items-center justify-center font-bold text-white text-base gap-2 shadow-2xl transition-all duration-200 active:scale-[0.94] ${
-            isRunning
-              ? 'bg-gray-700 hover:bg-gray-600 border-2 border-gray-600 shadow-gray-900/50'
-              : 'bg-gradient-to-br from-red-500 to-rose-600 shadow-red-900/50 hover:from-red-400 hover:to-rose-500'
-          }`}
-          aria-label={isRunning ? 'Stop CPR' : 'Start CPR'}
+          className={`feat-card ${isRunning ? 'feat-card-coral' : 'feat-card-yellow'} leaf-card-right w-full p-5 flex items-center justify-center gap-3 font-extrabold text-xl active:scale-[0.98] transition-transform shadow-xl`}
         >
           {isRunning ? (
             <>
-              <Square className="w-8 h-8" />
-              <span className="text-sm">Stop</span>
+              <Square className="w-6 h-6 fill-current" />
+              <span>Stop Metronome</span>
             </>
           ) : (
             <>
-              <Play className="w-8 h-8 fill-white" />
-              <span className="text-sm">Start</span>
+              <Play className="w-6 h-6 fill-current" />
+              <span>Start 110 BPM Metronome</span>
             </>
           )}
         </button>
-
-        {/* Tips */}
-        {!isRunning && (
-          <div className="mt-8 glass-card p-4 rounded-2xl w-full">
-            <h3 className="text-white font-bold text-sm mb-3 flex items-center gap-2">
-              <RefreshCw className="w-4 h-4 text-red-400" />
-              CPR Checklist
-            </h3>
-            <div className="space-y-2 text-sm text-gray-400">
-              <p>✓ Firm, flat surface — no soft beds</p>
-              <p>✓ Heel of hand — lower half of sternum</p>
-              <p>✓ Arms straight — use body weight</p>
-              <p>✓ Full chest recoil between compressions</p>
-              <p>✓ Minimize interruptions — max 10 sec</p>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

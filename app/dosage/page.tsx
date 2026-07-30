@@ -2,14 +2,14 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowLeft, Search, AlertTriangle, ChevronRight, Pill, Info } from 'lucide-react';
+import { ArrowLeft, Search, AlertTriangle, Pill, Info, Check } from 'lucide-react';
 import drugsData from '@/data/drugs.json';
 import { calculateDose, convertLbsToKg, type Drug, type DoseResult } from '@/lib/dose-calculator';
 
 type WeightUnit = 'kg' | 'lbs';
+type AgeCategory = 'Infant' | 'Child' | 'Adult';
 
 const drugs: Drug[] = drugsData as Drug[];
-
 const CATEGORIES = ['All', ...Array.from(new Set(drugs.map((d) => d.category)))];
 
 export default function DosagePage() {
@@ -17,6 +17,7 @@ export default function DosagePage() {
   const [selectedDrug, setSelectedDrug] = useState<Drug | null>(null);
   const [weightValue, setWeightValue] = useState('');
   const [weightUnit, setWeightUnit] = useState<WeightUnit>('kg');
+  const [ageCategory, setAgeCategory] = useState<AgeCategory>('Child');
   const [searchQuery, setSearchQuery] = useState('');
   const [category, setCategory] = useState('All');
   const [result, setResult] = useState<DoseResult | null>(null);
@@ -27,7 +28,6 @@ export default function DosagePage() {
     return weightUnit === 'kg' ? num : convertLbsToKg(num);
   }, [weightValue, weightUnit]);
 
-  // Auto-calculate when drug + weight are set
   useEffect(() => {
     if (selectedDrug && weightKg) {
       setResult(calculateDose(weightKg, selectedDrug));
@@ -50,91 +50,49 @@ export default function DosagePage() {
   }, [searchQuery, category]);
 
   return (
-    <div className="min-h-screen bg-gray-950 flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between px-5 pt-12 pb-4">
+    <div className="flex flex-col min-h-screen bg-black text-white pb-12">
+      {/* ── Top Header ── */}
+      <div className="flex items-center justify-between px-6 pt-14 pb-4">
         <button
           onClick={() => router.back()}
-          className="w-12 h-12 rounded-full glass-card flex items-center justify-center text-gray-400 hover:text-white transition-colors"
-          aria-label="Go back"
+          className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95"
+          style={{ background: 'rgba(255,255,255,0.12)' }}
+          aria-label="Back"
         >
-          <ArrowLeft className="w-5 h-5" />
+          <ArrowLeft className="w-5 h-5 text-white" strokeWidth={2} />
         </button>
+
         <div className="text-center">
-          <h1 className="text-white font-bold text-base">Dosage Calculator</h1>
-          <p className="text-gray-500 text-xs">Weight-based · Pediatric Safe</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-white/50">PRD Formula Calculator</p>
+          <h1 className="text-base font-bold text-white">Dosage Calculator</h1>
         </div>
-        <div className="w-12 h-12" />
+
+        <div className="w-11" />
       </div>
 
-      <div className="flex-1 px-5 pb-8 space-y-4 overflow-y-auto">
-        {/* Weight Input */}
-        <div className="glass-card-elevated p-5 rounded-2xl">
-          <label className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3 block">
-            Patient Weight
-          </label>
-          <div className="flex gap-2 mb-3">
-            <input
-              type="number"
-              inputMode="decimal"
-              value={weightValue}
-              onChange={(e) => setWeightValue(e.target.value)}
-              placeholder="Enter weight"
-              className="flex-1 h-14 bg-gray-900 border border-gray-700 rounded-xl px-4 text-white text-xl font-bold placeholder:text-gray-700 focus:outline-none focus:border-blue-500 transition-colors"
-              aria-label="Patient weight"
-            />
-            <div className="glass-card p-1 rounded-xl flex gap-1">
-              {(['kg', 'lbs'] as const).map((u) => (
-                <button
-                  key={u}
-                  onClick={() => setWeightUnit(u)}
-                  className={`px-4 h-full rounded-lg text-sm font-bold transition-all ${
-                    weightUnit === u
-                      ? 'bg-white text-gray-950'
-                      : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  {u}
-                </button>
-              ))}
-            </div>
-          </div>
-          {weightKg && (
-            <p className="text-xs text-gray-500">
-              = <span className="text-gray-300 font-semibold">{weightKg} kg</span>
-              {weightUnit === 'lbs' && ` (${weightValue} lbs)`}
-            </p>
-          )}
-        </div>
-
-        {/* Drug Search */}
-        <div className="glass-card-elevated p-5 rounded-2xl">
-          <label className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3 block">
-            Select Medication
-          </label>
-
-          {/* Search */}
-          <div className="relative mb-3">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search drugs..."
-              className="w-full h-11 bg-gray-900 border border-gray-700 rounded-xl pl-9 pr-4 text-white text-sm placeholder:text-gray-600 focus:outline-none focus:border-blue-500 transition-colors"
-            />
+      <div className="px-6 flex-1 space-y-4">
+        {/* ── Weight & Age Input Card (Yellow Leaf Card) ── */}
+        <div className="feat-card feat-card-yellow leaf-card-left p-6 space-y-3">
+          <div className="card-handle" style={{ background: 'rgba(0,0,0,0.15)' }} />
+          <div className="flex items-center justify-between text-black">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-black/60">
+              1. Patient Weight &amp; Group
+            </span>
+            {weightKg && (
+              <span className="text-xs font-extrabold bg-black/10 px-2.5 py-1 rounded-full">
+                {weightKg} kg
+              </span>
+            )}
           </div>
 
-          {/* Category chips */}
-          <div className="flex gap-2 overflow-x-auto pb-2 mb-3 scrollbar-hide">
-            {CATEGORIES.map((cat) => (
+          {/* Age selector (Infant, Child, Adult PRD requirement 3.3) */}
+          <div className="bg-black/10 p-1 rounded-2xl flex gap-1 items-center">
+            {(['Infant', 'Child', 'Adult'] as const).map((cat) => (
               <button
                 key={cat}
-                onClick={() => setCategory(cat)}
-                className={`flex-shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold border transition-all ${
-                  category === cat
-                    ? 'bg-blue-500/20 text-blue-300 border-blue-500/40'
-                    : 'text-gray-500 border-gray-700 hover:text-gray-300'
+                onClick={() => setAgeCategory(cat)}
+                className={`flex-1 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
+                  ageCategory === cat ? 'bg-black text-white' : 'text-black/60 hover:text-black'
                 }`}
               >
                 {cat}
@@ -142,116 +100,125 @@ export default function DosagePage() {
             ))}
           </div>
 
-          {/* Drug list */}
-          <div className="space-y-2 max-h-52 overflow-y-auto">
-            {filteredDrugs.map((drug) => (
+          <div className="flex gap-2">
+            <input
+              type="number"
+              inputMode="decimal"
+              value={weightValue}
+              onChange={(e) => setWeightValue(e.target.value)}
+              placeholder="Enter weight"
+              className="flex-1 min-w-0 h-14 bg-white/40 text-black placeholder:text-black/40 font-black text-2xl px-4 rounded-2xl border-none focus:outline-none"
+            />
+            <div className="bg-black/10 p-1 rounded-2xl flex gap-1 items-center flex-shrink-0">
+              {(['kg', 'lbs'] as const).map((u) => (
+                <button
+                  key={u}
+                  onClick={() => setWeightUnit(u)}
+                  className={`px-3.5 h-12 rounded-xl text-xs font-extrabold transition-all ${
+                    weightUnit === u ? 'bg-black text-white' : 'text-black/60 hover:text-black'
+                  }`}
+                >
+                  {u}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Drug Selection Card (Cream Leaf Card) ── */}
+        <div className="feat-card feat-card-cream leaf-card-full p-6 space-y-4">
+          <div className="card-handle" style={{ background: 'rgba(0,0,0,0.15)' }} />
+          <div className="text-black">
+            <span className="text-xs font-extrabold uppercase tracking-wider text-black/60">
+              2. Select Pre-Loaded Drug
+            </span>
+            {selectedDrug && (
+              <p className="text-lg font-black mt-1 text-black">
+                {selectedDrug.generic_name}
+              </p>
+            )}
+          </div>
+
+          <div className="relative">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-black/50" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search generic / brand..."
+              className="w-full h-11 bg-black/5 text-black placeholder:text-black/40 font-semibold text-sm pl-10 pr-4 rounded-xl focus:outline-none"
+            />
+          </div>
+
+          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
+            {CATEGORIES.map((cat) => (
               <button
-                key={drug.drug_id}
-                onClick={() => setSelectedDrug(drug)}
-                className={`w-full flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${
-                  selectedDrug?.drug_id === drug.drug_id
-                    ? 'bg-blue-900/40 border-blue-500/60 shadow-lg shadow-blue-900/30'
-                    : 'bg-gray-900/50 border-gray-800 hover:border-gray-600'
+                key={cat}
+                onClick={() => setCategory(cat)}
+                className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap flex-shrink-0 transition-all ${
+                  category === cat
+                    ? 'bg-black text-white'
+                    : 'bg-black/5 text-black/60 hover:text-black'
                 }`}
               >
-                <div className="w-9 h-9 rounded-lg bg-blue-900/50 flex items-center justify-center flex-shrink-0">
-                  <Pill className="w-4 h-4 text-blue-400" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-white text-sm font-semibold truncate">{drug.generic_name}</p>
-                  <p className="text-gray-500 text-xs truncate">{drug.brand_names.slice(0, 2).join(' / ')}</p>
-                </div>
-                <span className="text-xs text-gray-600 border border-gray-700 px-2 py-0.5 rounded flex-shrink-0">
-                  {drug.dosing_rules.route.split(' ')[0]}
-                </span>
+                {cat}
               </button>
             ))}
           </div>
+
+          <div className="space-y-2 max-h-48 overflow-y-auto pr-1">
+            {filteredDrugs.map((drug) => {
+              const isSelected = selectedDrug?.drug_id === drug.drug_id;
+              return (
+                <button
+                  key={drug.drug_id}
+                  onClick={() => setSelectedDrug(drug)}
+                  className={`w-full flex items-center justify-between p-3 rounded-2xl text-left transition-all ${
+                    isSelected ? 'bg-black text-white shadow' : 'bg-black/5 text-black hover:bg-black/10'
+                  }`}
+                >
+                  <div className="min-w-0 pr-2">
+                    <p className="font-extrabold text-sm truncate">{drug.generic_name}</p>
+                    <p className={`text-xs truncate ${isSelected ? 'text-white/60' : 'text-black/50'}`}>
+                      {drug.brand_names.join(', ')}
+                    </p>
+                  </div>
+                  {isSelected && <Check className="w-4 h-4 text-[#A8D672] flex-shrink-0" />}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Result */}
+        {/* ── Dose Result Card (Coral Leaf Card) ── */}
         {result && selectedDrug && weightKg && (
-          <div className="space-y-3 animate-fade-in-up">
-            {/* MAX CAP warning */}
+          <div className="feat-card feat-card-coral leaf-card-right p-6 space-y-4 animate-card-in">
+            <div className="card-handle" />
+            <div>
+              <span className="text-xs font-bold uppercase tracking-widest opacity-70">
+                Formula Output (mL)
+              </span>
+              <h2 className="text-5xl font-black mt-1 leading-none">
+                {result.displayDose}
+              </h2>
+              <p className="text-sm font-bold opacity-80 mt-2">
+                ({result.finalDoseMg} mg total) · {result.route}
+              </p>
+            </div>
+
+            {/* Formula Breakdown as per PRD Section 3.3 math */}
+            <div className="p-3 bg-black/20 rounded-2xl text-[11px] font-bold text-white/90">
+              Volume = ({weightKg} kg × {selectedDrug.dosing_rules.mg_per_kg_default} mg/kg) ÷ ({selectedDrug.standard_concentration.mg} mg / {selectedDrug.standard_concentration.ml} mL)
+            </div>
+
             {result.isCapped && (
-              <div className="flex items-start gap-3 px-4 py-3 bg-amber-900/30 border border-amber-600/50 rounded-xl">
-                <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-amber-300 font-bold text-sm">⚠️ MAX CAP REACHED</p>
-                  <p className="text-amber-400/80 text-xs mt-0.5">
-                    Calculated dose exceeds adult maximum. Capped at{' '}
-                    {result.cappedAt?.toFixed(2)} mL ({selectedDrug.dosing_rules.max_single_dose_mg} mg max).
-                  </p>
-                </div>
+              <div className="p-3 bg-black/20 rounded-2xl text-xs font-bold flex items-center gap-2 text-[#F7D44C]">
+                <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                <span>Enforced Adult Upper Cap ({result.cappedAt?.toFixed(2)} mL max)</span>
               </div>
             )}
-
-            {/* Weight warning */}
-            {result.warning && (
-              <div className="flex items-start gap-3 px-4 py-3 bg-red-900/30 border border-red-600/50 rounded-xl">
-                <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
-                <p className="text-red-300 text-xs leading-relaxed">{result.warning}</p>
-              </div>
-            )}
-
-            {/* Dose display */}
-            <div className="glass-card-elevated p-6 rounded-2xl">
-              <div className="text-center mb-6">
-                <p className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-1">
-                  Administer
-                </p>
-                <p className="text-6xl font-black text-white leading-none mb-1">
-                  {result.displayDose}
-                </p>
-                <p className="text-gray-400 text-sm">
-                  ({result.finalDoseMg} mg) · {result.route}
-                </p>
-              </div>
-
-              {/* Concentration */}
-              <div className="h-3 bg-gray-800 rounded-full mb-4 overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-700"
-                  style={{
-                    width: `${Math.min(100, (result.finalDoseMl / (selectedDrug.dosing_rules.max_single_dose_mg / (selectedDrug.standard_concentration.mg / selectedDrug.standard_concentration.ml))) * 100)}%`,
-                  }}
-                />
-              </div>
-
-              {/* Stats grid */}
-              <div className="grid grid-cols-2 gap-3">
-                {[
-                  { label: 'Concentration', value: `${selectedDrug.standard_concentration.mg}mg / ${selectedDrug.standard_concentration.ml}mL` },
-                  { label: 'Dose/kg', value: `${selectedDrug.dosing_rules.mg_per_kg_default} mg/kg` },
-                  { label: 'Max single dose', value: `${selectedDrug.dosing_rules.max_single_dose_mg} mg` },
-                  { label: 'Repeat every', value: selectedDrug.dosing_rules.interval_hours === 0 ? 'As needed' : `${selectedDrug.dosing_rules.interval_hours}h` },
-                ].map(({ label, value }) => (
-                  <div key={label} className="bg-gray-900/60 rounded-xl p-3">
-                    <p className="text-gray-500 text-xs mb-1">{label}</p>
-                    <p className="text-white text-sm font-semibold">{value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Drug notes */}
-            <div className="glass-card p-4 rounded-2xl flex items-start gap-3">
-              <Info className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
-              <div>
-                <p className="text-blue-300 text-xs font-semibold mb-1">Clinical Notes</p>
-                <p className="text-gray-400 text-xs leading-relaxed">{selectedDrug.notes}</p>
-              </div>
-            </div>
           </div>
         )}
-
-        {/* Disclaimer */}
-        <div className="glass-card p-4 rounded-2xl">
-          <p className="text-xs text-gray-500 leading-relaxed text-center">
-            ⚠️ Always verify doses with current guidelines and consider clinical context.
-            Doses are starting points — adjust for renal/hepatic impairment.
-          </p>
-        </div>
       </div>
     </div>
   );
