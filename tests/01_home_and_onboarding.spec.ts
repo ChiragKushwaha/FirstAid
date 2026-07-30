@@ -81,17 +81,17 @@ test.describe('FieldAid Home Page & Onboarding Disclaimer', () => {
     await expect(dosageCard).toHaveClass(/leaf-card-full/);
   });
 
-  test('should render bottom floating dock buttons', async ({ page }) => {
+  test('should not render bottom floating dock buttons', async ({ page }) => {
     await page.addInitScript(() => {
       window.localStorage.setItem('fieldaid_disclaimer_accepted', 'true');
     });
 
     await page.goto('/');
 
-    const plusFab = page.locator('a.fab-plus').first();
-    const micFab = page.locator('a.fab-mic-dock').first();
+    const plusFab = page.locator('a.fab-plus');
+    const micFab = page.locator('a.fab-mic-dock');
 
-    await expect(plusFab).toBeVisible();
-    await expect(micFab).toBeVisible();
+    await expect(plusFab).toHaveCount(0);
+    await expect(micFab).toHaveCount(0);
   });
 });

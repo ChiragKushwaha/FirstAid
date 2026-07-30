@@ -99,7 +99,7 @@ export default function ProtocolsPage() {
         </section>
 
         {/* ── Category Chips ── */}
-        <nav className="px-6 pb-5 flex gap-2.5 overflow-x-auto no-scrollbar" aria-label="Protocol Categories">
+        <nav className="px-6 py-3 mb-2 flex gap-2.5 items-center overflow-x-auto no-scrollbar" aria-label="Protocol Categories">
           {CATEGORIES.map((cat) => (
             <button
               key={cat}

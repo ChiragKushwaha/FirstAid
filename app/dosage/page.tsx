@@ -170,7 +170,7 @@ export default function DosagePage() {
             />
           </div>
 
-          <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1" aria-label="Drug Category Filter">
+          <div className="flex gap-2 overflow-x-auto no-scrollbar py-2.5 items-center" aria-label="Drug Category Filter">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}

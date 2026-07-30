@@ -97,7 +97,7 @@ export default function HomePage() {
         </section>
 
         {/* ── Category Filter Pills (WCAG Accessible Navigation) ── */}
-        <nav className="px-7 pb-6 flex gap-3 overflow-x-auto no-scrollbar" aria-label="Category Filters">
+        <nav className="px-7 py-3 mb-2 flex gap-3 items-center overflow-x-auto no-scrollbar" aria-label="Category Filters">
           {CATEGORY_FILTERS.map((f) => (
             <button
               key={f.label}
@@ -351,16 +351,6 @@ export default function HomePage() {
           </div>
         </div>
       )}
-
-      {/* ── Bottom Floating Dock ── */}
-      <nav className="floating-dock" aria-label="Quick Dock">
-        <Link href="/protocols" className="fab-plus" aria-label="Search Emergency Protocols">
-          <Plus className="w-8 h-8 stroke-[2.5]" />
-        </Link>
-        <Link href="/protocols" className="fab-mic-dock" aria-label="Voice Search Emergency Protocols">
-          <Mic className="w-6 h-6 stroke-[2]" />
-        </Link>
-      </nav>
     </div>
   );
 }

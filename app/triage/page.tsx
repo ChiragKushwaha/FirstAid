@@ -263,8 +263,8 @@ export default function TriagePage() {
   const progress = result
     ? 100
     : currentStepId
-    ? Math.round(((stepIndex + 1) / steps.length) * 100)
-    : 0;
+      ? Math.round(((stepIndex + 1) / steps.length) * 100)
+      : 0;
 
   return (
     <div className="flex flex-col min-h-screen bg-canvas text-main pb-24">
@@ -318,9 +318,8 @@ export default function TriagePage() {
                 onClick={() => setPatientType('adult')}
                 role="radio"
                 aria-checked={patientType === 'adult'}
-                className={`flex-1 py-3 rounded-full text-sm font-bold flex items-center justify-center gap-2 transition-all ${
-                  patientType === 'adult' ? 'bg-black text-white dark:bg-white dark:text-black shadow' : 'opacity-60 hover:opacity-100'
-                }`}
+                className={`flex-1 py-3 rounded-full text-sm font-bold flex items-center justify-center gap-2 transition-all ${patientType === 'adult' ? 'bg-black text-white dark:bg-white dark:text-black shadow' : 'opacity-60 hover:opacity-100'
+                  }`}
               >
                 <User className="w-4 h-4" />
                 Adult START
@@ -329,9 +328,8 @@ export default function TriagePage() {
                 onClick={() => setPatientType('pediatric')}
                 role="radio"
                 aria-checked={patientType === 'pediatric'}
-                className={`flex-1 py-3 rounded-full text-sm font-bold flex items-center justify-center gap-2 transition-all ${
-                  patientType === 'pediatric' ? 'bg-black text-white dark:bg-white dark:text-black shadow' : 'opacity-60 hover:opacity-100'
-                }`}
+                className={`flex-1 py-3 rounded-full text-sm font-bold flex items-center justify-center gap-2 transition-all ${patientType === 'pediatric' ? 'bg-black text-white dark:bg-white dark:text-black shadow' : 'opacity-60 hover:opacity-100'
+                  }`}
               >
                 <Baby className="w-4 h-4" />
                 JumpSTART

@@ -36,7 +36,7 @@ test.describe('Emergency Protocols & Client-Side Search', () => {
     await page.locator('text=Severe Bleeding Control').first().click();
 
     await expect(page.locator('h1').last()).toBeVisible();
-    await expect(page.locator('text=Shared to').first()).toBeVisible();
+    await expect(page.locator('text=Verified Guide').first()).toBeVisible();
     await expect(page.locator('text=Tap steps below').first()).toBeVisible();
     await expect(page.locator('text=Protocol Steps:').first()).toBeVisible();
   });

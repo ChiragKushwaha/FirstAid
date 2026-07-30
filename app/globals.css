@@ -73,15 +73,15 @@
 
   /* WCAG High-Contrast Focus Visible Rings for Keyboard Nav */
   :focus-visible {
-    outline: 3px solid #F7D44C !important;
-    outline-offset: 3px !important;
-    box-shadow: 0 0 0 5px #000000 !important;
+    outline: 2px solid #F7D44C !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.4) !important;
   }
 
   :root[data-theme="light"] :focus-visible {
-    outline: 3px solid #000000 !important;
-    outline-offset: 3px !important;
-    box-shadow: 0 0 0 5px #F7D44C !important;
+    outline: 2px solid #000000 !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 2px #F7D44C !important;
   }
 }
 
@@ -116,16 +116,20 @@
 .feat-card-blue   { background: var(--blue); color: #000000; }
 .feat-card-green  { background: var(--green); color: #000000; }
 
-.feat-card-yellow *,
-.feat-card-cream  *,
-.feat-card-green  *,
-.feat-card-blue   * {
-  color: #000000 !important;
+/* Dark containers and buttons inside light cards must have crisp white text */
+.feat-card .bg-black,
+.feat-card .bg-black *,
+.feat-card .bg-black\/90,
+.feat-card .bg-black\/90 *,
+.feat-card .bg-black\/80,
+.feat-card .bg-black\/80 *,
+.feat-card button.bg-black,
+.feat-card button.bg-black *,
+.feat-card .btn-primary-pill,
+.feat-card .btn-primary-pill * {
+  color: #FFFFFF !important;
 }
 
-.feat-card-coral * {
-  color: var(--white) !important;
-}
 
 .card-handle {
   width: 36px;

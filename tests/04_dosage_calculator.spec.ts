@@ -33,6 +33,9 @@ test.describe('Weight-Based Dosage Calculator', () => {
   });
 
   test('should calculate liquid dosage volume using PRD formula', async ({ page }) => {
+    const kgBtn = page.getByRole('radio', { name: 'kg' });
+    await kgBtn.click();
+
     const input = page.getByPlaceholder('Enter weight').first();
     await input.fill('15');
 

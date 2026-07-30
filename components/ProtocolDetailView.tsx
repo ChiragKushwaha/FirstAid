@@ -9,6 +9,9 @@ import {
   List,
   AlertTriangle,
   Heart,
+  Stethoscope,
+  ShieldCheck,
+  Activity,
 } from 'lucide-react';
 import { useState } from 'react';
 import ThemeToggle from '@/components/ThemeToggle';
@@ -51,13 +54,13 @@ export default function ProtocolDetailView({ protocol }: { protocol: Protocol })
         </button>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-bold opacity-60">Shared to</span>
-          <div className="flex items-center -space-x-2">
+          <span className="text-xs font-bold opacity-60">Verified Guide</span>
+          <div className="flex items-center -space-x-1">
             <div className="w-7 h-7 rounded-full bg-[#EB7A53] border-2 border-canvas flex items-center justify-center text-white text-[10px] font-bold">
-              👨🏿‍⚕️
+              <Stethoscope className="w-3.5 h-3.5" />
             </div>
             <div className="w-7 h-7 rounded-full bg-[#98B7DB] border-2 border-canvas flex items-center justify-center text-white text-[10px] font-bold">
-              👩🏼‍⚕️
+              <ShieldCheck className="w-3.5 h-3.5" />
             </div>
           </div>
         </div>
@@ -83,7 +86,7 @@ export default function ProtocolDetailView({ protocol }: { protocol: Protocol })
             <span className="inline-flex items-center gap-2">
               {line2}
               <span className="inline-flex w-10 h-10 rounded-full bg-[#EB7A53] border-2 border-canvas items-center justify-center text-white text-xs font-bold shadow-md align-middle">
-                👨🏽‍⚕️
+                <Activity className="w-5 h-5 stroke-[2.5]" />
               </span>
             </span>
             {line3 && (
@@ -133,11 +136,10 @@ export default function ProtocolDetailView({ protocol }: { protocol: Protocol })
               <div
                 key={step.step}
                 role="listitem"
-                className={`p-5 rounded-[28px] border-2 transition-transform ${
-                  step.critical
+                className={`p-5 rounded-[28px] border-2 transition-transform ${step.critical
                     ? 'border-black bg-[#F7D44C] text-black shadow-sm'
                     : 'border-current/20 bg-white/40 dark:bg-white/10 text-main'
-                }`}
+                  }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-xs font-black uppercase tracking-wider bg-black/10 px-2.5 py-0.5 rounded-full">
