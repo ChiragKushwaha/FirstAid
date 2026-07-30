@@ -7,6 +7,12 @@ export const metadata: Metadata = {
     default: 'FieldAid — Offline Emergency First Aid, Triage & Dosage Guide',
     template: '%s | FieldAid Emergency Response',
   },
+  verification: {
+    google: "OIk6sJu3nmgUIb9c-yV6DvU_P4KyXctrKxF8ZukWjQE",
+    other: {
+      "msvalidate.01": "OIk6sJu3nmgUIb9c-yV6DvU_P4KyXctrKxF8ZukWjQE",
+    }
+  },
   description:
     'Offline-first emergency medical reference, START triage decision tree, 110 BPM CPR metronome, and weight-based pediatric dosage calculator for zero-connectivity environments.',
   keywords: [
