@@ -1,44 +1,100 @@
 {
-  "name": "FieldAid",
+  "id": "/",
+  "name": "FieldAid Emergency First Aid & Triage",
   "short_name": "FieldAid",
-  "description": "Offline-first emergency triage, first-aid protocols and dosage calculator for zero-connectivity environments.",
+  "description": "Offline-first emergency triage, 110 BPM CPR metronome, weight-based pediatric dosage calculator, and zero-latency medical protocol directory.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait-primary",
-  "theme_color": "#0A0E1A",
-  "background_color": "#0A0E1A",
-  "lang": "en",
+  "theme_color": "#000000",
+  "background_color": "#000000",
+  "lang": "en-US",
+  "dir": "ltr",
   "categories": ["medical", "health", "utilities"],
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "/icons/icon-192.jpg",
+      "src": "/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
-      "src": "/icons/icon-512.jpg",
+      "src": "/icons/maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
       "sizes": "512x512",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ],
   "shortcuts": [
     {
       "name": "Triage Wizard",
+      "short_name": "Triage",
       "url": "/triage",
-      "description": "START/JumpSTART triage decision engine"
+      "description": "START and JumpSTART triage decision tree engine",
+      "icons": [
+        {
+          "src": "/icons/shortcut-triage.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     },
     {
-      "name": "CPR Pacer",
+      "name": "CPR Metronome",
+      "short_name": "CPR Pacer",
       "url": "/cpr",
-      "description": "Audio-guided CPR metronome"
+      "description": "110 BPM CPR audio and visual metronome guide",
+      "icons": [
+        {
+          "src": "/icons/shortcut-cpr.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
     },
     {
       "name": "Dosage Calculator",
+      "short_name": "Dosage",
       "url": "/dosage",
-      "description": "Weight-based medication dosing"
+      "description": "Weight-based medication volume calculator",
+      "icons": [
+        {
+          "src": "/icons/shortcut-dosage.png",
+          "sizes": "96x96",
+          "type": "image/png"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile-home.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "FieldAid Emergency First Aid Mobile Screen"
+    },
+    {
+      "src": "/screenshots/desktop-home.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "FieldAid Emergency First Aid Desktop Screen"
     }
   ]
 }

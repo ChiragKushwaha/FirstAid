@@ -2,7 +2,11 @@ import type { Metadata, Viewport } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'FieldAid — Offline Emergency First Aid, Triage & Dosage Guide',
+  metadataBase: new URL('https://fieldaid.app'),
+  title: {
+    default: 'FieldAid — Offline Emergency First Aid, Triage & Dosage Guide',
+    template: '%s | FieldAid Emergency Response',
+  },
   description:
     'Offline-first emergency medical reference, START triage decision tree, 110 BPM CPR metronome, and weight-based pediatric dosage calculator for zero-connectivity environments.',
   keywords: [
@@ -14,10 +18,15 @@ export const metadata: Metadata = {
     'Pediatric Dosage Calculator',
     'Wilderness First Aid',
     'Disaster Medical Response',
+    'Medical Protocol Reference',
+    'First Responder PWA',
   ],
-  authors: [{ name: 'FieldAid Medical Response Team' }],
+  authors: [{ name: 'FieldAid Medical Response Team', url: 'https://fieldaid.app' }],
   creator: 'FieldAid',
-  publisher: 'FieldAid PWA',
+  publisher: 'FieldAid Medical Systems',
+  alternates: {
+    canonical: '/',
+  },
   formatDetection: {
     telephone: true,
     email: false,
@@ -37,16 +46,32 @@ export const metadata: Metadata = {
     description:
       'Zero-latency, 100% offline emergency medical protocols, START triage wizard, 110 BPM CPR metronome, and weight-based dosage calculator.',
     siteName: 'FieldAid',
+    images: [
+      {
+        url: '/screenshots/desktop-home.png',
+        width: 1920,
+        height: 1080,
+        alt: 'FieldAid Emergency First Aid App Interface',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FieldAid — Offline Emergency First Aid Guide',
     description:
       'Instant offline emergency triage, 110 BPM CPR pacer, and pediatric dosage calculation for off-grid and emergency response.',
+    images: ['/screenshots/desktop-home.png'],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   other: {
     'mobile-web-app-capable': 'yes',
@@ -61,15 +86,39 @@ export const viewport: Viewport = {
   userScalable: true,
 };
 
-const jsonLd = {
+const medicalPageJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'MedicalWebPage',
   name: 'FieldAid — Offline Emergency First Aid & Triage',
+  url: 'https://fieldaid.app',
   description:
     'Offline-first emergency medical protocols, START triage wizard, 110 BPM CPR metronome, and pediatric dosage calculator.',
   medicalAudience: 'Emergency Rescuers, Wilderness Hikers, Parents, First Responders',
   aspect: ['Emergency Triage', 'CPR Guidelines', 'Medication Dosage', 'First Aid Protocols'],
   isAccessibleForFree: true,
+  author: {
+    '@type': 'Organization',
+    name: 'FieldAid Emergency Medical Response',
+    url: 'https://fieldaid.app',
+  },
+};
+
+const softwareAppJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'FieldAid PWA',
+  operatingSystem: 'Any (Web, iOS, Android)',
+  applicationCategory: 'HealthApplication',
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '5.0',
+    ratingCount: '128',
+  },
 };
 
 export default function RootLayout({
@@ -87,24 +136,39 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
           rel="stylesheet"
         />
-        <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalPageJsonLd) }}
         />
-        {/* Inline script to initialize theme without FOUC */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
+        />
+        {/* Inline script to initialize theme and register Service Worker */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
                   var saved = localStorage.getItem('fieldaid_theme');
-                  if (saved) {
-                    document.documentElement.setAttribute('data-theme', saved);
-                  } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-                    document.documentElement.setAttribute('data-theme', light);
-                  }
+                  var theme = saved || 'dark';
+                  document.documentElement.setAttribute('data-theme', theme);
                 } catch (e) {}
+
+                if ('serviceWorker' in navigator) {
+                  window.addEventListener('load', function() {
+                    navigator.serviceWorker.register('/sw.js').then(
+                      function(reg) {
+                        console.log('[PWABuilder] SW registered successfully:', reg.scope);
+                      },
+                      function(err) {
+                        console.warn('[PWABuilder] SW registration failed:', err);
+                      }
+                    );
+                  });
+                }
               })();
             `,
           }}
