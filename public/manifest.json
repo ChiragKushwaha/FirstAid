@@ -1,0 +1,44 @@
+{
+  "name": "FieldAid",
+  "short_name": "FieldAid",
+  "description": "Offline-first emergency triage, first-aid protocols and dosage calculator for zero-connectivity environments.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0A0E1A",
+  "background_color": "#0A0E1A",
+  "lang": "en",
+  "categories": ["medical", "health", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Triage Wizard",
+      "url": "/triage",
+      "description": "START/JumpSTART triage decision engine"
+    },
+    {
+      "name": "CPR Pacer",
+      "url": "/cpr",
+      "description": "Audio-guided CPR metronome"
+    },
+    {
+      "name": "Dosage Calculator",
+      "url": "/dosage",
+      "description": "Weight-based medication dosing"
+    }
+  ]
+}

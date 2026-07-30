@@ -1,0 +1,242 @@
+[
+  {
+    "drug_id": "acetaminophen_pediatric",
+    "generic_name": "Acetaminophen",
+    "brand_names": ["Tylenol", "Calpol", "Panadol"],
+    "category": "Analgesic / Antipyretic",
+    "standard_concentration": { "mg": 160, "ml": 5 },
+    "dosing_rules": {
+      "mg_per_kg_default": 15,
+      "min_weight_kg": 2.5,
+      "max_single_dose_mg": 1000,
+      "max_daily_dose_mg": 4000,
+      "interval_hours": 4,
+      "route": "Oral"
+    },
+    "notes": "Most widely used OTC analgesic. Safe for all ages. Do not exceed 5 doses in 24h."
+  },
+  {
+    "drug_id": "ibuprofen_pediatric",
+    "generic_name": "Ibuprofen",
+    "brand_names": ["Advil", "Motrin", "Nurofen"],
+    "category": "NSAID / Anti-inflammatory",
+    "standard_concentration": { "mg": 100, "ml": 5 },
+    "dosing_rules": {
+      "mg_per_kg_default": 10,
+      "min_weight_kg": 5.0,
+      "max_single_dose_mg": 400,
+      "max_daily_dose_mg": 1200,
+      "interval_hours": 6,
+      "route": "Oral"
+    },
+    "notes": "Not for infants under 3 months or <5kg. Avoid in dehydration, renal impairment, or active bleeding."
+  },
+  {
+    "drug_id": "diphenhydramine",
+    "generic_name": "Diphenhydramine",
+    "brand_names": ["Benadryl", "Nytol"],
+    "category": "Antihistamine",
+    "standard_concentration": { "mg": 12.5, "ml": 5 },
+    "dosing_rules": {
+      "mg_per_kg_default": 1.25,
+      "min_weight_kg": 10.0,
+      "max_single_dose_mg": 50,
+      "max_daily_dose_mg": 300,
+      "interval_hours": 4,
+      "route": "Oral"
+    },
+    "notes": "First-line for mild allergic reactions. Causes sedation. Do NOT use in infants under 2 years."
+  },
+  {
+    "drug_id": "epinephrine_auto_injector",
+    "generic_name": "Epinephrine (Adrenaline)",
+    "brand_names": ["EpiPen", "Auvi-Q", "Jext"],
+    "category": "Emergency / Anaphylaxis",
+    "standard_concentration": { "mg": 0.3, "ml": 1 },
+    "dosing_rules": {
+      "mg_per_kg_default": 0.01,
+      "min_weight_kg": 15.0,
+      "max_single_dose_mg": 0.5,
+      "max_daily_dose_mg": 1.0,
+      "interval_hours": 0.08,
+      "route": "Intramuscular (outer thigh)"
+    },
+    "notes": "LIFE-SAVING for anaphylaxis. Adult EpiPen: 0.3mg. Jr EpiPen (<30kg): 0.15mg. Inject into outer thigh, through clothing if necessary."
+  },
+  {
+    "drug_id": "aspirin_adult",
+    "generic_name": "Aspirin",
+    "brand_names": ["Bayer", "Disprin", "Ecotrin"],
+    "category": "Antiplatelet / Analgesic",
+    "standard_concentration": { "mg": 325, "ml": 1 },
+    "dosing_rules": {
+      "mg_per_kg_default": 5,
+      "min_weight_kg": 40.0,
+      "max_single_dose_mg": 325,
+      "max_daily_dose_mg": 4000,
+      "interval_hours": 4,
+      "route": "Oral (chewed for cardiac events)"
+    },
+    "notes": "For suspected heart attack: 325mg chewed immediately. Do NOT use in children under 16 (Reye's syndrome risk). Avoid in active bleeding."
+  },
+  {
+    "drug_id": "oral_rehydration_salts",
+    "generic_name": "Oral Rehydration Salts (ORS)",
+    "brand_names": ["Pedialyte", "Dioralyte", "WHO-ORS"],
+    "category": "Rehydration",
+    "standard_concentration": { "mg": 20500, "ml": 1000 },
+    "dosing_rules": {
+      "mg_per_kg_default": 75,
+      "min_weight_kg": 1.0,
+      "max_single_dose_mg": 100000,
+      "max_daily_dose_mg": 300000,
+      "interval_hours": 0,
+      "route": "Oral"
+    },
+    "notes": "75 mL/kg over 3–4 hours for mild-moderate dehydration. Continue normal feeding. Give small sips if vomiting."
+  },
+  {
+    "drug_id": "ondansetron",
+    "generic_name": "Ondansetron",
+    "brand_names": ["Zofran", "Emeset"],
+    "category": "Antiemetic",
+    "standard_concentration": { "mg": 4, "ml": 5 },
+    "dosing_rules": {
+      "mg_per_kg_default": 0.15,
+      "min_weight_kg": 8.0,
+      "max_single_dose_mg": 8,
+      "max_daily_dose_mg": 24,
+      "interval_hours": 8,
+      "route": "Oral (ODT preferred in field)"
+    },
+    "notes": "Highly effective for vomiting. ODT (orally disintegrating tablet) dissolves on tongue — useful when patient cannot swallow."
+  },
+  {
+    "drug_id": "amoxicillin",
+    "generic_name": "Amoxicillin",
+    "brand_names": ["Amoxil", "Trimox"],
+    "category": "Antibiotic (Penicillin class)",
+    "standard_concentration": { "mg": 250, "ml": 5 },
+    "dosing_rules": {
+      "mg_per_kg_default": 25,
+      "min_weight_kg": 3.0,
+      "max_single_dose_mg": 500,
+      "max_daily_dose_mg": 3000,
+      "interval_hours": 8,
+      "route": "Oral"
+    },
+    "notes": "Broad-spectrum. Check penicillin allergy before administering. Standard course: 7–10 days."
+  },
+  {
+    "drug_id": "metronidazole",
+    "generic_name": "Metronidazole",
+    "brand_names": ["Flagyl", "Metrogel"],
+    "category": "Antibiotic / Antiprotozoal",
+    "standard_concentration": { "mg": 200, "ml": 5 },
+    "dosing_rules": {
+      "mg_per_kg_default": 7.5,
+      "min_weight_kg": 5.0,
+      "max_single_dose_mg": 500,
+      "max_daily_dose_mg": 2000,
+      "interval_hours": 8,
+      "route": "Oral"
+    },
+    "notes": "First-line for amoebic dysentery, giardia, anaerobic infections. Avoid alcohol during treatment."
+  },
+  {
+    "drug_id": "loratadine",
+    "generic_name": "Loratadine",
+    "brand_names": ["Claritin", "Clarityn", "Alavert"],
+    "category": "Antihistamine (non-sedating)",
+    "standard_concentration": { "mg": 5, "ml": 5 },
+    "dosing_rules": {
+      "mg_per_kg_default": 0.2,
+      "min_weight_kg": 10.0,
+      "max_single_dose_mg": 10,
+      "max_daily_dose_mg": 10,
+      "interval_hours": 24,
+      "route": "Oral"
+    },
+    "notes": "Non-drowsy antihistamine. Once-daily dosing. <30kg: 5mg/day. ≥30kg: 10mg/day."
+  },
+  {
+    "drug_id": "glucose_oral",
+    "generic_name": "Dextrose / Glucose (Oral)",
+    "brand_names": ["Dextro Energy", "Glucose tablets"],
+    "category": "Emergency / Hypoglycemia",
+    "standard_concentration": { "mg": 5000, "ml": 50 },
+    "dosing_rules": {
+      "mg_per_kg_default": 200,
+      "min_weight_kg": 1.0,
+      "max_single_dose_mg": 20000,
+      "max_daily_dose_mg": 80000,
+      "interval_hours": 0.25,
+      "route": "Oral"
+    },
+    "notes": "15–20g fast glucose for mild hypoglycemia. Repeat if no improvement in 15 min. For conscious patients only."
+  },
+  {
+    "drug_id": "hydrocortisone_topical",
+    "generic_name": "Hydrocortisone",
+    "brand_names": ["Cortaid", "Cortizone-10"],
+    "category": "Topical Corticosteroid",
+    "standard_concentration": { "mg": 10, "ml": 1 },
+    "dosing_rules": {
+      "mg_per_kg_default": 0.5,
+      "min_weight_kg": 5.0,
+      "max_single_dose_mg": 30,
+      "max_daily_dose_mg": 60,
+      "interval_hours": 12,
+      "route": "Topical"
+    },
+    "notes": "Apply thin layer to affected area. Not for face or under occlusive dressing in infants. Short-term use only."
+  },
+  {
+    "drug_id": "morphine_oral",
+    "generic_name": "Morphine Sulfate",
+    "brand_names": ["MS Contin", "Oramorph"],
+    "category": "Opioid Analgesic",
+    "standard_concentration": { "mg": 10, "ml": 5 },
+    "dosing_rules": {
+      "mg_per_kg_default": 0.2,
+      "min_weight_kg": 10.0,
+      "max_single_dose_mg": 15,
+      "max_daily_dose_mg": 60,
+      "interval_hours": 4,
+      "route": "Oral"
+    },
+    "notes": "Strong opioid. For severe pain only. Monitor respiratory rate. Have naloxone available. Do not use in head injury."
+  },
+  {
+    "drug_id": "salbutamol_inhaler",
+    "generic_name": "Salbutamol (Albuterol)",
+    "brand_names": ["Ventolin", "ProAir", "Airomir"],
+    "category": "Bronchodilator",
+    "standard_concentration": { "mg": 0.1, "ml": 1 },
+    "dosing_rules": {
+      "mg_per_kg_default": 0.003,
+      "min_weight_kg": 3.0,
+      "max_single_dose_mg": 0.4,
+      "max_daily_dose_mg": 1.6,
+      "interval_hours": 4,
+      "route": "Inhaled (MDI)"
+    },
+    "notes": "1 puff = 100mcg. Standard rescue dose: 2–4 puffs via MDI. For acute asthma. Repeat every 20 min in severe attack."
+  },
+  {
+    "drug_id": "ciprofloxacin",
+    "generic_name": "Ciprofloxacin",
+    "brand_names": ["Cipro", "Ciflox"],
+    "category": "Antibiotic (Fluoroquinolone)",
+    "standard_concentration": { "mg": 250, "ml": 5 },
+    "dosing_rules": {
+      "mg_per_kg_default": 10,
+      "min_weight_kg": 20.0,
+      "max_single_dose_mg": 500,
+      "max_daily_dose_mg": 1500,
+      "interval_hours": 12,
+      "route": "Oral"
+    },
+    "notes": "Broad-spectrum. Use only in confirmed/serious bacterial infections. Avoid in children under 18 unless no alternatives. Tendon rupture risk."
+  }
+]

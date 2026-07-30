@@ -1,0 +1,442 @@
+[
+  {
+    "id": "protocol_trauma_hemorrhage",
+    "title": "Severe Bleeding Control",
+    "category": "Trauma",
+    "synonyms": ["bleeding", "cut", "gash", "blood", "hemorrhage", "laceration", "wound"],
+    "severity": "critical",
+    "summary": "Immediately control life-threatening external hemorrhage using direct pressure and tourniquets.",
+    "steps": [
+      { "step": 1, "instruction": "Ensure scene safety. Don PPE (gloves) if available.", "critical": false },
+      { "step": 2, "instruction": "Apply DIRECT PRESSURE with a clean cloth or bandage. Press firmly — do not release.", "critical": true },
+      { "step": 3, "instruction": "If blood soaks through, add MORE layers on top. Do NOT remove the first layer.", "critical": true },
+      { "step": 4, "instruction": "For limb wounds: If bleeding is not controlled in 2 minutes, apply a tourniquet 5–7 cm above the wound.", "critical": true },
+      { "step": 5, "instruction": "Tighten tourniquet until bleeding stops. Note the time applied.", "critical": true },
+      { "step": 6, "instruction": "For neck/groin wounds: Pack the wound tightly with gauze. Apply sustained pressure.", "critical": true },
+      { "step": 7, "instruction": "Keep patient warm and lying down. Treat for shock.", "critical": false },
+      { "step": 8, "instruction": "Do NOT give food or water. Seek emergency care immediately.", "critical": false }
+    ],
+    "warnings": [
+      "Never remove a tourniquet once applied — only trained medical personnel should do so.",
+      "Femoral or axillary arterial bleeding can be fatal within 3 minutes.",
+      "Signs of shock: pale/cold skin, rapid weak pulse, confusion — treat urgently."
+    ]
+  },
+  {
+    "id": "protocol_cardiac_cpr_adult",
+    "title": "Adult CPR (30:2)",
+    "category": "Cardiac",
+    "synonyms": ["heart attack", "cardiac arrest", "not breathing", "unconscious", "CPR", "chest compressions"],
+    "severity": "critical",
+    "summary": "Perform hands-only CPR for an unresponsive adult with no normal breathing.",
+    "steps": [
+      { "step": 1, "instruction": "Check responsiveness: tap shoulders, shout 'Are you OK?'", "critical": false },
+      { "step": 2, "instruction": "Call for emergency services (or send someone to call).", "critical": true },
+      { "step": 3, "instruction": "Lay patient on a firm, flat surface. Tilt head back, lift chin — check breathing for no more than 10 seconds.", "critical": true },
+      { "step": 4, "instruction": "If not breathing normally: Begin chest compressions. Place heel of one hand on center of chest (lower half of sternum). Interlock fingers.", "critical": true },
+      { "step": 5, "instruction": "Compress HARD and FAST: at least 5 cm (2 inches) deep. Rate: 100–120 BPM. Allow full chest recoil.", "critical": true },
+      { "step": 6, "instruction": "After 30 compressions: Give 2 rescue breaths (1 second each, watch chest rise).", "critical": true },
+      { "step": 7, "instruction": "Continue 30:2 cycles without stopping until AED arrives, patient regains consciousness, or EMS takes over.", "critical": true },
+      { "step": 8, "instruction": "If AED is available: Power on and follow voice prompts immediately.", "critical": true }
+    ],
+    "warnings": [
+      "High-quality CPR: minimal interruptions, adequate depth and rate are critical for survival.",
+      "Do NOT delay compressions to find an AED — start CPR immediately.",
+      "If alone and unwilling/unable to give breaths, continuous hands-only compression at 100–120 BPM is acceptable."
+    ]
+  },
+  {
+    "id": "protocol_cardiac_cpr_pediatric",
+    "title": "Pediatric CPR (15:2)",
+    "category": "Pediatric",
+    "synonyms": ["child CPR", "baby CPR", "infant CPR", "pediatric cardiac arrest", "child unconscious"],
+    "severity": "critical",
+    "summary": "Perform CPR on an unresponsive infant or child using 15:2 ratio (two-rescuer).",
+    "steps": [
+      { "step": 1, "instruction": "Check responsiveness: flick the bottom of the infant's foot or tap child's shoulders.", "critical": false },
+      { "step": 2, "instruction": "Call for emergency services.", "critical": true },
+      { "step": 3, "instruction": "Open airway: tilt head back slightly (less than adult), lift chin.", "critical": true },
+      { "step": 4, "instruction": "Check breathing for no more than 10 seconds. If absent or gasping: begin CPR.", "critical": true },
+      { "step": 5, "instruction": "INFANT: Use 2 fingers in center of chest, just below nipple line. Compress 4 cm (1.5 inches).", "critical": true },
+      { "step": 6, "instruction": "CHILD: Use 1–2 hands on lower sternum. Compress at least 5 cm (2 inches).", "critical": true },
+      { "step": 7, "instruction": "Rate: 100–120 BPM. Give 2 rescue breaths after every 15 compressions.", "critical": true },
+      { "step": 8, "instruction": "For infant rescue breaths: cover both mouth AND nose with your mouth. Gentle puffs only.", "critical": true }
+    ],
+    "warnings": [
+      "Pediatric cardiac arrest is most often due to respiratory failure — prioritize airway.",
+      "Do not tilt infant's head too far back — neutral position.",
+      "Infant breaths: blow just enough to see chest rise — do not over-inflate."
+    ]
+  },
+  {
+    "id": "protocol_airway_choking_adult",
+    "title": "Choking — Adult (Heimlich Maneuver)",
+    "category": "Airway",
+    "synonyms": ["choking", "can't breathe", "airway obstruction", "Heimlich", "stuck food", "blocked airway"],
+    "severity": "critical",
+    "summary": "Clear a foreign-body airway obstruction in a conscious adult.",
+    "steps": [
+      { "step": 1, "instruction": "Confirm severe choking: Ask 'Are you choking?' If they cannot speak, cough, or breathe — act immediately.", "critical": true },
+      { "step": 2, "instruction": "Call for emergency services.", "critical": true },
+      { "step": 3, "instruction": "Stand behind the victim. Place one foot forward between their feet for stability.", "critical": false },
+      { "step": 4, "instruction": "Wrap your arms around their waist. Make a fist with one hand.", "critical": false },
+      { "step": 5, "instruction": "Place the thumb side of your fist against the abdomen — midway between navel and breastbone.", "critical": true },
+      { "step": 6, "instruction": "Grasp fist with other hand. Give FIRM inward-and-upward thrusts. Repeat until object is expelled.", "critical": true },
+      { "step": 7, "instruction": "If victim becomes unconscious: Lower them to the ground and begin CPR. Look in mouth before each breath.", "critical": true }
+    ],
+    "warnings": [
+      "Never perform blind finger sweeps — only remove object if you can see it.",
+      "For pregnant or obese victims: use chest thrusts instead of abdominal thrusts.",
+      "Partial obstruction: encourage forceful coughing — do not intervene yet."
+    ]
+  },
+  {
+    "id": "protocol_airway_choking_infant",
+    "title": "Choking — Infant (Under 1 Year)",
+    "category": "Pediatric",
+    "synonyms": ["baby choking", "infant choking", "newborn choking", "baby can't breathe"],
+    "severity": "critical",
+    "summary": "Clear airway obstruction in an infant under 1 year using back blows and chest thrusts.",
+    "steps": [
+      { "step": 1, "instruction": "Hold infant face-down on your forearm, supporting the head lower than the chest.", "critical": true },
+      { "step": 2, "instruction": "Give 5 FIRM back blows between shoulder blades with heel of your hand.", "critical": true },
+      { "step": 3, "instruction": "Turn infant face-up. Support head. Give 5 CHEST THRUSTS using 2 fingers on lower sternum.", "critical": true },
+      { "step": 4, "instruction": "Repeat back blows and chest thrusts until object is expelled or infant loses consciousness.", "critical": true },
+      { "step": 5, "instruction": "If infant becomes unconscious: Begin infant CPR. Look in mouth before each breath — remove object only if visible.", "critical": true }
+    ],
+    "warnings": [
+      "Never perform abdominal thrusts on infants under 1 year.",
+      "Do not shake the infant.",
+      "Call emergency services immediately."
+    ]
+  },
+  {
+    "id": "protocol_environmental_anaphylaxis",
+    "title": "Anaphylaxis (Severe Allergic Reaction)",
+    "category": "Environmental",
+    "synonyms": ["anaphylaxis", "allergic reaction", "bee sting", "snake bite", "spider bite", "envenomation", "swollen throat", "hives", "epinephrine"],
+    "severity": "critical",
+    "summary": "Recognize and treat life-threatening anaphylactic shock immediately.",
+    "steps": [
+      { "step": 1, "instruction": "Recognize signs: sudden hives/swelling, difficulty breathing, throat tightening, dizziness, rapid heartbeat after allergen exposure.", "critical": true },
+      { "step": 2, "instruction": "Call for emergency services IMMEDIATELY.", "critical": true },
+      { "step": 3, "instruction": "If patient has an epinephrine auto-injector (EpiPen): Administer to outer thigh (through clothing is OK). Hold for 10 seconds.", "critical": true },
+      { "step": 4, "instruction": "Lay patient flat with legs elevated (unless breathing is difficult — then let them sit up).", "critical": true },
+      { "step": 5, "instruction": "If no improvement in 5–15 minutes and a second auto-injector is available: administer second dose.", "critical": true },
+      { "step": 6, "instruction": "If patient stops breathing: Begin CPR.", "critical": true },
+      { "step": 7, "instruction": "Keep patient warm. Do NOT give oral medications (swallowing may be impaired).", "critical": false }
+    ],
+    "warnings": [
+      "Epinephrine is the ONLY effective first-line treatment — antihistamines alone are NOT sufficient for anaphylaxis.",
+      "Biphasic reactions can occur 8–72 hours later — all anaphylaxis patients need hospital monitoring.",
+      "Symptoms can progress from mild to fatal in minutes."
+    ]
+  },
+  {
+    "id": "protocol_trauma_burns",
+    "title": "Burns (Thermal)",
+    "category": "Trauma",
+    "synonyms": ["burn", "fire", "scald", "hot liquid", "thermal injury", "chemical burn", "sunburn"],
+    "severity": "urgent",
+    "summary": "Assess and treat thermal burns. Cool the burn, protect the wound, prevent infection.",
+    "steps": [
+      { "step": 1, "instruction": "Remove from source. Ensure scene safety — do not approach if fire/chemicals are active.", "critical": true },
+      { "step": 2, "instruction": "Cool the burn with cool (NOT cold/ice) running water for 20 minutes.", "critical": true },
+      { "step": 3, "instruction": "Remove jewelry and loose clothing near the burn — do NOT remove if stuck to skin.", "critical": true },
+      { "step": 4, "instruction": "Assess depth: Superficial (red, painful) / Partial thickness (blistering) / Full thickness (white/black, painless).", "critical": false },
+      { "step": 5, "instruction": "Cover with a clean, non-fluffy, non-adhesive dressing or cling wrap (loosely).", "critical": true },
+      { "step": 6, "instruction": "Do NOT burst blisters. Do NOT apply butter, toothpaste, or ice.", "critical": true },
+      { "step": 7, "instruction": "Seek emergency care for: burns >1% on face/hands/genitals, electrical burns, or any full-thickness burn.", "critical": true }
+    ],
+    "warnings": [
+      "Chemical burns: brush off dry chemical first, then irrigate with water for 20+ minutes.",
+      "Electrical burns may appear minor externally but cause massive internal damage.",
+      "Inhalation injury: hoarse voice, singed nose hairs, facial burns — high risk."
+    ]
+  },
+  {
+    "id": "protocol_trauma_fractures",
+    "title": "Fractures & Sprains (Splinting)",
+    "category": "Trauma",
+    "synonyms": ["broken bone", "fracture", "sprain", "broken leg", "broken arm", "bone out", "dislocation", "splint", "orthopedic"],
+    "severity": "urgent",
+    "summary": "Immobilize suspected fractures to prevent further injury and manage pain.",
+    "steps": [
+      { "step": 1, "instruction": "Do NOT attempt to straighten or set the bone. Immobilize in position found.", "critical": true },
+      { "step": 2, "instruction": "Check circulation below injury: pulse, sensation, movement (capillary refill, skin color).", "critical": true },
+      { "step": 3, "instruction": "Apply splint: use padded rigid material (board, trekking pole, rolled newspaper). Extend splint beyond joints above and below the fracture.", "critical": true },
+      { "step": 4, "instruction": "Secure with bandages or strips — snug but NOT tight enough to cut circulation.", "critical": true },
+      { "step": 5, "instruction": "Elevate limb above heart level if possible. Apply ice pack wrapped in cloth (20 min on, 20 off).", "critical": false },
+      { "step": 6, "instruction": "Re-check circulation every 15 minutes. If pulse disappears or limb turns blue: loosen splint immediately.", "critical": true },
+      { "step": 7, "instruction": "For open (compound) fractures: cover wound with sterile dressing before splinting. Do NOT push bone back in.", "critical": true }
+    ],
+    "warnings": [
+      "Suspect spinal injury if: high-energy trauma, neck/back pain, numbness, or loss of bladder control — do NOT move.",
+      "A femur (thigh bone) fracture can cause 1–2 liters of blood loss internally.",
+      "Open fractures have high infection risk — cover wound immediately."
+    ]
+  },
+  {
+    "id": "protocol_neurological_head_trauma",
+    "title": "Head Injury & Concussion",
+    "category": "Neurological",
+    "synonyms": ["head injury", "concussion", "skull fracture", "brain injury", "hit on head", "unconscious head"],
+    "severity": "urgent",
+    "summary": "Assess and manage traumatic head injuries. Monitor neurological status closely.",
+    "steps": [
+      { "step": 1, "instruction": "Stabilize the neck/spine if mechanism of injury was high-energy. Do not move patient unless in immediate danger.", "critical": true },
+      { "step": 2, "instruction": "Assess: Glasgow Coma Scale (Eye, Verbal, Motor). Note: confusion, unequal pupils, CSF from ears/nose.", "critical": true },
+      { "step": 3, "instruction": "If conscious: Keep calm and still. Assess orientation: name, date, location.", "critical": false },
+      { "step": 4, "instruction": "If unconscious with normal breathing: Recovery position (lateral recumbent). Monitor airway.", "critical": true },
+      { "step": 5, "instruction": "If not breathing: Begin CPR — maintain inline spinal stabilization.", "critical": true },
+      { "step": 6, "instruction": "Control scalp bleeding with direct pressure — scalp bleeds profusely but pressure is effective.", "critical": true },
+      { "step": 7, "instruction": "Do NOT give pain medications. Do NOT give food/water. Monitor every 15 minutes.", "critical": true },
+      { "step": 8, "instruction": "Seek immediate emergency care — worsening symptoms may indicate epidural hematoma (deteriorate fast).", "critical": true }
+    ],
+    "warnings": [
+      "DANGER signs requiring immediate evacuation: decreasing consciousness, one pupil dilated, seizures, worsening headache, repeated vomiting.",
+      "The lucid interval: patient may appear fine briefly then rapidly deteriorate — never leave alone.",
+      "All head injuries with LOC require professional evaluation."
+    ]
+  },
+  {
+    "id": "protocol_environmental_hypothermia",
+    "title": "Hypothermia",
+    "category": "Environmental",
+    "synonyms": ["hypothermia", "cold exposure", "freezing", "frostbite", "cold injury", "exposure", "shivering"],
+    "severity": "urgent",
+    "summary": "Recognize and rewarm a victim of dangerous cold exposure.",
+    "steps": [
+      { "step": 1, "instruction": "Remove from cold. Move to warm, dry shelter. Handle gently — do NOT rub vigorously.", "critical": true },
+      { "step": 2, "instruction": "Remove wet clothing. Replace with dry insulation layers. Wrap in blanket or sleeping bag.", "critical": true },
+      { "step": 3, "instruction": "Mild (shivering, alert): Give warm sweet drinks if fully conscious and swallowing is unimpaired.", "critical": false },
+      { "step": 4, "instruction": "Moderate (no shivering, confused): Apply chemical heat packs to armpits, groin, and neck. DO NOT apply directly to skin.", "critical": true },
+      { "step": 5, "instruction": "Severe (unconscious, rigid): Handle extremely carefully. Check pulse for 60 seconds before assuming absent.", "critical": true },
+      { "step": 6, "instruction": "If no pulse after 60-second check: Begin CPR. Continue until core rewarmed or EMS arrives.", "critical": true },
+      { "step": 7, "instruction": "'Not dead until warm and dead' — patients have survived prolonged CPR in hypothermia.", "critical": false }
+    ],
+    "warnings": [
+      "Rough handling can trigger ventricular fibrillation in severe hypothermia.",
+      "Do NOT give alcohol — causes vasodilation and worsens heat loss.",
+      "Active rewarming of limbs before core warms can cause afterdrop (sudden temperature drop)."
+    ]
+  },
+  {
+    "id": "protocol_environmental_heatstroke",
+    "title": "Heat Stroke & Heat Exhaustion",
+    "category": "Environmental",
+    "synonyms": ["heat stroke", "heat exhaustion", "overheating", "hyperthermia", "heat illness", "sunstroke"],
+    "severity": "urgent",
+    "summary": "Recognize heat emergencies and rapidly cool the patient.",
+    "steps": [
+      { "step": 1, "instruction": "Distinguish: Heat Exhaustion (sweating, pale, weak pulse) vs Heat Stroke (HOT dry skin, confusion, no sweating) — Heat Stroke is immediately life-threatening.", "critical": true },
+      { "step": 2, "instruction": "Move patient to cool shade or air-conditioned area immediately.", "critical": true },
+      { "step": 3, "instruction": "For Heat Stroke: Cool RAPIDLY. Apply ice packs to neck, armpits, groin. Wet skin and fan aggressively.", "critical": true },
+      { "step": 4, "instruction": "For Heat Exhaustion: Lay flat, elevate legs. Give cool fluids (water, electrolyte drinks) if conscious.", "critical": true },
+      { "step": 5, "instruction": "Remove excess clothing.", "critical": false },
+      { "step": 6, "instruction": "Call emergency services for Heat Stroke. Monitor consciousness every 5 minutes.", "critical": true },
+      { "step": 7, "instruction": "Do NOT give aspirin or acetaminophen for heat stroke fever — ineffective and potentially harmful.", "critical": true }
+    ],
+    "warnings": [
+      "Heat stroke core temp can exceed 40°C (104°F) — brain damage begins within minutes.",
+      "Cooling must begin BEFORE evacuation — every minute matters.",
+      "Elderly, infants, and those on diuretics/antipsychotics are high risk."
+    ]
+  },
+  {
+    "id": "protocol_environmental_bites",
+    "title": "Animal Bites, Snake & Spider Envenomation",
+    "category": "Environmental",
+    "synonyms": ["snake bite", "spider bite", "animal bite", "dog bite", "envenomation", "venomous", "bee sting", "wasp sting"],
+    "severity": "urgent",
+    "summary": "Manage envenomation and animal bite wounds in the field.",
+    "steps": [
+      { "step": 1, "instruction": "Move victim away from snake/animal. Note appearance for identification if safe.", "critical": true },
+      { "step": 2, "instruction": "Keep victim calm and still. Immobilize bitten limb at or below heart level.", "critical": true },
+      { "step": 3, "instruction": "Remove rings, watches, tight clothing near bite — swelling will occur.", "critical": true },
+      { "step": 4, "instruction": "Apply clean bandage. For pressure-immobilization (pressure bandage method) for neurotoxic snakes: wrap firmly from extremity upward.", "critical": false },
+      { "step": 5, "instruction": "Mark and note time of bite. Monitor: swelling spread, bruising, systemic symptoms (nausea, diplopia, difficulty breathing).", "critical": true },
+      { "step": 6, "instruction": "For bee stings: Remove stinger by scraping sideways. Apply cold pack. Monitor for anaphylaxis.", "critical": true },
+      { "step": 7, "instruction": "Evacuate immediately. Antivenom is the definitive treatment — field treatment is supportive only.", "critical": true }
+    ],
+    "warnings": [
+      "Do NOT cut and suck venom — ineffective and causes local tissue damage.",
+      "Do NOT apply tourniquet — worsens necrosis.",
+      "Do NOT apply electric shock — no evidence of benefit.",
+      "Antivenom timing is critical — transport immediately."
+    ]
+  },
+  {
+    "id": "protocol_neurological_seizure",
+    "title": "Seizures",
+    "category": "Neurological",
+    "synonyms": ["seizure", "epilepsy", "fit", "convulsion", "shaking", "loss of consciousness seizure"],
+    "severity": "urgent",
+    "summary": "Protect the patient during a seizure and manage the post-ictal phase.",
+    "steps": [
+      { "step": 1, "instruction": "Time the seizure. Protect from injury: clear surrounding area of hard/sharp objects.", "critical": true },
+      { "step": 2, "instruction": "Do NOT restrain. Do NOT put anything in mouth.", "critical": true },
+      { "step": 3, "instruction": "Cushion the head with something soft.", "critical": false },
+      { "step": 4, "instruction": "Loosen tight clothing around neck.", "critical": false },
+      { "step": 5, "instruction": "After seizure: Place in recovery position. Assess breathing. Stay until fully conscious.", "critical": true },
+      { "step": 6, "instruction": "Call emergency services if: seizure >5 minutes, second seizure occurs, no recovery of consciousness, injury, first-time seizure, pregnancy.", "critical": true },
+      { "step": 7, "instruction": "Reassure during post-ictal confusion — patient will be disoriented.", "critical": false }
+    ],
+    "warnings": [
+      "Status epilepticus (seizure >5 min or repeated without recovery) is a medical emergency.",
+      "Never put fingers or objects in the mouth — tongue biting is not preventable this way and you will be bitten.",
+      "Protect patient dignity — move bystanders back."
+    ]
+  },
+  {
+    "id": "protocol_respiratory_asthma",
+    "title": "Asthma Attack",
+    "category": "Respiratory",
+    "synonyms": ["asthma", "asthma attack", "wheezing", "difficulty breathing", "bronchospasm", "inhaler"],
+    "severity": "urgent",
+    "summary": "Manage acute asthma attack and escalate severe attacks to emergency care.",
+    "steps": [
+      { "step": 1, "instruction": "Keep patient calm and upright (sitting forward). Loosen clothing.", "critical": true },
+      { "step": 2, "instruction": "Help patient use their own rescue inhaler (salbutamol/albuterol): 1 puff, 4 breaths, repeat up to 4 puffs.", "critical": true },
+      { "step": 3, "instruction": "If using a spacer device: 1 puff into spacer, breathe 4–5 times, repeat.", "critical": false },
+      { "step": 4, "instruction": "Wait 4 minutes. If no improvement: repeat 4 puffs. Repeat cycle up to 3 times.", "critical": true },
+      { "step": 5, "instruction": "Call emergency services if: no relief after 12 puffs, lips/fingernails turn blue, unable to speak in full sentences, exhausted.", "critical": true },
+      { "step": 6, "instruction": "Severe: Continuous salbutamol every 20 minutes while awaiting EMS.", "critical": true }
+    ],
+    "warnings": [
+      "Silent chest (no wheeze) in severe asthma is a sign of near-fatal attack — call EMS immediately.",
+      "Avoid known triggers: exercise, cold air, allergens, smoke.",
+      "Oxygen via mask if available."
+    ]
+  },
+  {
+    "id": "protocol_trauma_spinal",
+    "title": "Suspected Spinal Injury",
+    "category": "Trauma",
+    "synonyms": ["spinal injury", "neck injury", "back injury", "spine", "paralysis", "cervical spine", "C-spine"],
+    "severity": "critical",
+    "summary": "Stabilize and protect a patient with suspected spinal cord injury.",
+    "steps": [
+      { "step": 1, "instruction": "DO NOT MOVE the patient unless in immediate life-threatening danger (fire, drowning).", "critical": true },
+      { "step": 2, "instruction": "Stabilize head in neutral position: hold head between both hands, do not allow rotation or flexion.", "critical": true },
+      { "step": 3, "instruction": "If in water: Keep face above water, support head and neck in neutral position while extracting.", "critical": true },
+      { "step": 4, "instruction": "Assess neurological status: ask about numbness, tingling, or inability to move limbs.", "critical": true },
+      { "step": 5, "instruction": "If must move patient: Log-roll with minimum 3 rescuers, maintaining spinal alignment at all times.", "critical": true },
+      { "step": 6, "instruction": "Maintain manual stabilization until professional immobilization (rigid collar + spine board) is available.", "critical": true },
+      { "step": 7, "instruction": "Call emergency services. Continue to monitor ABCs.", "critical": true }
+    ],
+    "warnings": [
+      "Suspect spinal injury in: high-speed MVAs, falls from height, diving accidents, significant head/neck trauma.",
+      "An unstable cervical fracture with cord displacement can cause permanent paralysis or death.",
+      "Helmet removal: requires two rescuers, performed carefully only if necessary for airway."
+    ]
+  },
+  {
+    "id": "protocol_metabolic_diabetic",
+    "title": "Diabetic Emergency (Hypoglycemia)",
+    "category": "Metabolic",
+    "synonyms": ["diabetes", "diabetic", "low blood sugar", "hypoglycemia", "insulin", "blood sugar", "dizzy diabetic"],
+    "severity": "urgent",
+    "summary": "Recognize and treat dangerously low blood sugar in a diabetic patient.",
+    "steps": [
+      { "step": 1, "instruction": "Recognize signs of hypoglycemia: shakiness, sweating, pale skin, confusion, irritability, rapid heart rate, hunger.", "critical": true },
+      { "step": 2, "instruction": "If patient is conscious and able to swallow: Give fast-acting sugar immediately.", "critical": true },
+      { "step": 3, "instruction": "15–20g of fast glucose: 4 glucose tablets, or 150mL fruit juice/regular soda, or 1 tablespoon of honey.", "critical": true },
+      { "step": 4, "instruction": "Wait 15 minutes. Re-check. If no improvement: repeat sugar dose.", "critical": true },
+      { "step": 5, "instruction": "Once improved: Give a more substantial snack (complex carb + protein) to stabilize.", "critical": false },
+      { "step": 6, "instruction": "If unconscious or unable to swallow: Do NOT give anything by mouth. Place in recovery position. Call EMS.", "critical": true },
+      { "step": 7, "instruction": "Glucagon injection (if available and trained): administer IM into thigh/buttock.", "critical": false }
+    ],
+    "warnings": [
+      "Never give food/drink to an unconscious patient — aspiration risk.",
+      "If unsure whether hypo or hyperglycemia: give sugar anyway — harmful only if hyperglycemic, but low risk vs benefit.",
+      "Severe hypoglycemia can cause seizures and permanent brain damage."
+    ]
+  },
+  {
+    "id": "protocol_cardiac_stroke",
+    "title": "Stroke (FAST Assessment)",
+    "category": "Cardiac",
+    "synonyms": ["stroke", "CVA", "brain attack", "face drooping", "arm weakness", "speech difficulty", "FAST"],
+    "severity": "critical",
+    "summary": "Rapidly identify stroke using FAST and arrange emergency transport — time is brain.",
+    "steps": [
+      { "step": 1, "instruction": "FACE: Ask patient to smile. Is one side drooping or uneven?", "critical": true },
+      { "step": 2, "instruction": "ARMS: Ask to raise both arms. Does one drift downward?", "critical": true },
+      { "step": 3, "instruction": "SPEECH: Ask to repeat a simple sentence. Is speech slurred, confused, or unable?", "critical": true },
+      { "step": 4, "instruction": "TIME: If ANY of the above are positive — call emergency services IMMEDIATELY. Note the exact time symptoms started.", "critical": true },
+      { "step": 5, "instruction": "Do NOT give food, water, or aspirin. Keep patient calm and still.", "critical": true },
+      { "step": 6, "instruction": "If conscious: Position in recovery position or supported sitting. If unconscious: manage airway.", "critical": true },
+      { "step": 7, "instruction": "Monitor vital signs every 5 minutes. Reassure constantly.", "critical": false }
+    ],
+    "warnings": [
+      "Thrombolysis (clot-busting) must be given within 4.5 hours — every minute of delay = 1.9 million neurons lost.",
+      "Do NOT give aspirin without medical instruction — hemorrhagic stroke would be worsened.",
+      "Even brief 'mini-strokes' (TIA) that resolve require immediate hospital evaluation."
+    ]
+  },
+  {
+    "id": "protocol_respiratory_drowning",
+    "title": "Drowning",
+    "category": "Respiratory",
+    "synonyms": ["drowning", "near drowning", "submersion", "water rescue", "pool accident"],
+    "severity": "critical",
+    "summary": "Rescue and resuscitate a drowning victim.",
+    "steps": [
+      { "step": 1, "instruction": "Scene safety first: Do NOT enter water without proper training/equipment. Use reach, throw, or row techniques.", "critical": true },
+      { "step": 2, "instruction": "Remove from water as quickly and safely as possible.", "critical": true },
+      { "step": 3, "instruction": "Check responsiveness and breathing immediately.", "critical": true },
+      { "step": 4, "instruction": "If not breathing: Give 5 rescue breaths FIRST (drowning is respiratory arrest — breaths are priority).", "critical": true },
+      { "step": 5, "instruction": "If no pulse after breaths: Begin CPR (30:2 adult / 15:2 pediatric).", "critical": true },
+      { "step": 6, "instruction": "Do NOT delay CPR attempting to drain water from lungs — begin compressions.", "critical": true },
+      { "step": 7, "instruction": "All near-drowning survivors require hospital evaluation — secondary drowning can occur 24 hours later.", "critical": true }
+    ],
+    "warnings": [
+      "Drowning is silent — victims rarely call for help.",
+      "Cold water submersion: may survive longer — continue CPR even after prolonged submersion in cold water.",
+      "All conscious drowning victims: lay flat, keep warm, seek emergency care."
+    ]
+  },
+  {
+    "id": "protocol_trauma_eye",
+    "title": "Eye Injuries",
+    "category": "Trauma",
+    "synonyms": ["eye injury", "eye pain", "chemical in eye", "foreign body eye", "eye laceration", "eye trauma"],
+    "severity": "urgent",
+    "summary": "First aid for chemical splash, foreign bodies, and penetrating eye injuries.",
+    "steps": [
+      { "step": 1, "instruction": "Chemical splash: irrigate IMMEDIATELY with large amounts of clean water for 20 minutes. Hold eye open under gentle stream.", "critical": true },
+      { "step": 2, "instruction": "Foreign body (non-penetrating): Do NOT rub. Pull upper lid over lower to allow tears to flush it. Irrigate.", "critical": true },
+      { "step": 3, "instruction": "Penetrating injury: Do NOT remove object. Shield the eye with a rigid cup — do not apply pressure.", "critical": true },
+      { "step": 4, "instruction": "Cover BOTH eyes (injured and uninjured) to minimize eye movement.", "critical": true },
+      { "step": 5, "instruction": "Keep patient calm and lying down. Seek emergency ophthalmology care.", "critical": true }
+    ],
+    "warnings": [
+      "Penetrating eye injuries: removing embedded objects risks vitreous humor loss and permanent blindness.",
+      "Alkali burns (bleach, cement) penetrate deeper and are more severe than acid burns — irrigate longer.",
+      "Any visual changes after trauma require urgent opthalmological evaluation."
+    ]
+  },
+  {
+    "id": "protocol_trauma_amputation",
+    "title": "Traumatic Amputation",
+    "category": "Trauma",
+    "synonyms": ["amputation", "severed limb", "cut off finger", "traumatic amputation", "degloving"],
+    "severity": "critical",
+    "summary": "Control life-threatening hemorrhage and preserve amputated part for potential reimplantation.",
+    "steps": [
+      { "step": 1, "instruction": "Apply tourniquet to stump IMMEDIATELY — high on limb, 5–7 cm above wound.", "critical": true },
+      { "step": 2, "instruction": "Tighten until bleeding stops. Note application time.", "critical": true },
+      { "step": 3, "instruction": "Cover stump with clean moist dressing. Continue monitoring for breakthrough bleeding.", "critical": true },
+      { "step": 4, "instruction": "Treat for shock: lay flat, elevate legs if no spinal injury, keep warm.", "critical": true },
+      { "step": 5, "instruction": "Preserve amputated part: wrap in moist clean cloth, place in a clean bag, then in ice water (NOT directly on ice).", "critical": true },
+      { "step": 6, "instruction": "Label bag with patient name and time of amputation. Transport with patient.", "critical": true },
+      { "step": 7, "instruction": "Fingers/digits reimplantation window: 6 hours warm / 12 hours cold. Larger limbs: 4 hours warm / 6 hours cold.", "critical": false }
+    ],
+    "warnings": [
+      "Life over limb — hemorrhage control is absolute priority over part preservation.",
+      "Do NOT place amputated part directly on ice — frostbite will make reimplantation impossible.",
+      "Call ahead to receiving hospital about potential reimplantation patient."
+    ]
+  }
+]
