@@ -90,10 +90,10 @@
   color: var(--text-main);
 }
 
-/* ─── Leaf-Shaped Cards ─── */
-.leaf-card-left  { border-radius: 40px 16px 40px 40px; }
-.leaf-card-right { border-radius: 16px 40px 40px 40px; }
-.leaf-card-full  { border-radius: 36px 36px 16px 36px; }
+/* ─── Leaf-Shaped Cards (Pixel Perfect Corner Radii) ─── */
+.leaf-card-left  { border-radius: 4px 44px 44px 44px; }
+.leaf-card-right { border-radius: 44px 4px 44px 44px; }
+.leaf-card-full  { border-radius: 44px; }
 
 .feat-card {
   padding: 24px;

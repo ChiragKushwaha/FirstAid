@@ -16,6 +16,7 @@ import {
   Bug,
   BookOpen,
   Zap,
+  Syringe,
 } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 
@@ -60,9 +61,10 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-canvas text-main pb-36 relative overflow-hidden">
-      {/* ── Top Bar Header (WCAG Semantic Header) ── */}
-      <header className="flex items-center justify-between px-7 pt-14 pb-2">
+    <div className="flex flex-col min-h-screen bg-canvas text-main pb-36 relative overflow-x-hidden">
+      <div className="w-full max-w-md mx-auto flex flex-col flex-1">
+        {/* ── Top Bar Header (WCAG Semantic Header) ── */}
+        <header className="flex items-center justify-between px-6 pt-10 pb-2">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowDisclaimer(true)}
@@ -112,23 +114,20 @@ export default function HomePage() {
         </nav>
 
         {/* ── Feature Cards Masonry Grid ── */}
-        <section className="px-5 grid grid-cols-2 gap-3.5 items-start" aria-label="Emergency Features">
+        <section className="px-4 grid grid-cols-2 gap-3 items-start" aria-label="Emergency Features">
           {/* LEFT COLUMN — Coral Card (#EB7A53) Leaf Corner */}
-          <div className="flex flex-col gap-3.5">
+          <div className="flex flex-col gap-3">
             <Link
               href="/triage"
-              className="feat-card feat-card-coral leaf-card-left p-6 flex flex-col justify-between"
-              style={{ minHeight: 330 }}
+              className="feat-card feat-card-coral leaf-card-left p-5 flex flex-col justify-between"
+              style={{ minHeight: 320 }}
               aria-label="Emergency Triage START Algorithm Wizard"
             >
               <div className="card-handle" />
 
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between gap-1">
                 <div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-widest opacity-80">
-                    START Wizard
-                  </span>
-                  <h2 className="text-xl font-extrabold leading-tight mt-0.5">
+                  <h2 className="text-[22px] font-black leading-[1.08] tracking-tight text-white">
                     Emergency<br />Triage
                   </h2>
                 </div>
@@ -137,7 +136,7 @@ export default function HomePage() {
                     e.preventDefault();
                     toggleFav('triage');
                   }}
-                  className="fav-btn"
+                  className="fav-btn w-9 h-9 flex-shrink-0"
                   aria-label="Favorite Triage"
                 >
                   <Heart
@@ -148,34 +147,30 @@ export default function HomePage() {
                 </button>
               </div>
 
-              <div className="space-y-3 my-3">
-                <div className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 opacity-90 flex-shrink-0" strokeWidth={2.2} />
-                  <span className="text-xs font-semibold opacity-75 line-through">
-                    1. Ability to walk?
+              <div className="space-y-2 my-2">
+                <div className="bg-white/20 px-3 py-2 rounded-full flex items-center gap-2.5">
+                  <div className="w-5 h-5 rounded-full bg-black/20 text-white flex items-center justify-center flex-shrink-0">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
+                  </div>
+                  <span className="text-xs font-bold text-white/90 line-through truncate">
+                    Walkable?
                   </span>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <Circle className="w-4 h-4 opacity-90 flex-shrink-0" strokeWidth={1.8} />
-                  <span className="text-xs font-bold">
-                    2. Breathing rate (&gt;30)
+                <div className="bg-white/10 px-3 py-2 rounded-full flex items-center gap-2.5">
+                  <div className="w-5 h-5 rounded-full border-2 border-white/40 flex-shrink-0" />
+                  <span className="text-xs font-bold text-white truncate">
+                    Breathing (&gt;30)
                   </span>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <Circle className="w-4 h-4 opacity-90 flex-shrink-0" strokeWidth={1.8} />
-                  <span className="text-xs font-bold">
-                    3. Perfusion (&gt;2s refill)
-                  </span>
-                </div>
-                <div className="flex items-center gap-2.5">
-                  <Circle className="w-4 h-4 opacity-90 flex-shrink-0" strokeWidth={1.8} />
-                  <span className="text-xs font-bold">
-                    4. Mental status AVPU
+                <div className="bg-white/10 px-3 py-2 rounded-full flex items-center gap-2.5">
+                  <div className="w-5 h-5 rounded-full border-2 border-white/40 flex-shrink-0" />
+                  <span className="text-xs font-bold text-white truncate">
+                    Perfusion (&gt;2s)
                   </span>
                 </div>
               </div>
 
-              <div className="pt-2 border-t border-current/20 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider opacity-90">
+              <div className="pt-2 border-t border-white/20 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-white/90">
                 <span>Rapid 30s Check</span>
                 <Activity className="w-4 h-4" />
               </div>
@@ -183,72 +178,73 @@ export default function HomePage() {
           </div>
 
           {/* RIGHT COLUMN — Yellow Card (#F7D44C) Leaf Corner */}
-          <div className="flex flex-col gap-3.5">
+          <div className="flex flex-col gap-3">
             <Link
               href="/cpr"
-              className="feat-card feat-card-yellow leaf-card-right p-6 flex flex-col justify-between"
-              style={{ minHeight: 330 }}
+              className="feat-card feat-card-yellow leaf-card-right p-5 flex flex-col justify-between"
+              style={{ minHeight: 320 }}
               aria-label="CPR Guide & 110 BPM Metronome"
             >
               <div className="card-handle" />
 
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between gap-1">
                 <div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-widest opacity-60">
-                    Audio &amp; Visual
-                  </span>
-                  <h2 className="text-xl font-extrabold leading-tight mt-0.5">
+                  <h2 className="text-[22px] font-black leading-[1.08] tracking-tight text-black">
                     CPR<br />Metronome
                   </h2>
+                  <p className="text-xs font-semibold text-black/60 mt-0.5">
+                    110 BPM Pacer
+                  </p>
                 </div>
                 <button
                   onClick={(e) => {
                     e.preventDefault();
                     toggleFav('cpr');
                   }}
-                  className="fav-btn fav-btn-dark"
+                  className="fav-btn fav-btn-dark w-9 h-9 flex-shrink-0"
                   aria-label="Favorite CPR Metronome"
                 >
                   <Heart
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-black"
                     fill={favs['cpr'] ? 'black' : 'none'}
                     strokeWidth={2.2}
                   />
                 </button>
               </div>
 
-              <div className="my-2 flex flex-col items-center justify-center p-3 rounded-2xl bg-black/5">
-                <HeartPulse className="w-16 h-16 stroke-[1.5] animate-pulse" />
-                <span className="text-xs font-black mt-1">110 BPM</span>
+              <div className="my-2 flex flex-col items-center justify-center p-3.5 rounded-3xl bg-black/10">
+                <HeartPulse className="w-12 h-12 stroke-[1.8] animate-pulse text-black" />
+                <span className="text-xs font-black mt-1 text-black tracking-wider">110 BPM</span>
               </div>
 
-              <div className="pt-2 border-t border-current/10 flex items-center justify-between text-[11px] font-extrabold opacity-70 uppercase tracking-wider">
+              <div className="pt-2 border-t border-black/10 flex items-center justify-between text-[11px] font-extrabold text-black/70 uppercase tracking-wider">
                 <span>30:2 &amp; 15:2 Toggles</span>
+                <Zap className="w-4 h-4" />
               </div>
             </Link>
           </div>
         </section>
 
         {/* ── Middle Cream Card (#F6ECC9) (Dosage Calculator) ── */}
-        <section className="px-5 mt-3.5">
+        <section className="px-4 mt-3">
           <Link
             href="/dosage"
-            className="feat-card feat-card-cream leaf-card-full p-5 flex items-center justify-between"
+            className="feat-card feat-card-cream leaf-card-full p-4 flex items-center justify-between"
             aria-label="Weight-Based Dosage Calculator"
           >
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm text-xl flex-shrink-0">
-                🧪
+              <div className="w-13 h-13 rounded-full bg-white flex items-center justify-center shadow-sm text-black flex-shrink-0">
+                <Syringe className="w-6 h-6 text-black" strokeWidth={2.2} />
               </div>
 
               <div>
-                <p className="text-[10px] font-extrabold opacity-50 uppercase tracking-widest">
-                  Weight-based Dosing Formula
-                </p>
-                <h2 className="text-lg font-extrabold leading-tight">
+                <span className="text-xs font-semibold text-black/50">
+                  Weight Dosing Formula
+                </span>
+                <h2 className="text-xl font-black leading-tight text-black mt-0.5">
                   Dosage Calculator
                 </h2>
-                <p className="text-xs font-medium opacity-60">
+                <p className="text-xs font-medium text-black/60">
                   Adult &amp; Pediatric Safe • Max Cap Enforced
                 </p>
               </div>
@@ -259,11 +255,11 @@ export default function HomePage() {
                 e.preventDefault();
                 toggleFav('dosage');
               }}
-              className="fav-btn fav-btn-dark"
+              className="fav-btn fav-btn-dark w-9 h-9 flex-shrink-0"
               aria-label="Favorite Dosage Calculator"
             >
               <Heart
-                className="w-4 h-4"
+                className="w-4 h-4 text-black"
                 fill={favs['dosage'] ? 'black' : 'none'}
                 strokeWidth={2.2}
               />
@@ -351,6 +347,7 @@ export default function HomePage() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

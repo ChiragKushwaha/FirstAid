@@ -48,6 +48,9 @@ test.describe('Weight-Based Dosage Calculator', () => {
   });
 
   test('should enforce adult maximum cap warning for heavy patients', async ({ page }) => {
+    const kgBtn = page.getByRole('radio', { name: 'kg' });
+    await kgBtn.click();
+
     const input = page.getByPlaceholder('Enter weight').first();
     await input.fill('80');
 
@@ -56,7 +59,7 @@ test.describe('Weight-Based Dosage Calculator', () => {
     await acetaminophenBtn.click();
 
     await expect(page.locator('text=Enforced Adult Upper Cap').first()).toBeVisible();
-    await expect(page.locator('text=31.5 mL').first()).toBeVisible();
+    await expect(page.locator('text=31.25 mL').first()).toBeVisible();
   });
 
   test('should filter pre-loaded drugs using search bar', async ({ page }) => {
