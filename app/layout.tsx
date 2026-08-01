@@ -4,7 +4,7 @@ import RoutePreloader from '@/components/RoutePreloader';
 import './globals.css';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://fieldaid.app'),
+  metadataBase: new URL('https://field-aid.vercel.app'),
   title: {
     default: 'FieldAid — Offline Emergency First Aid, Triage & Dosage Guide',
     template: '%s | FieldAid Emergency Response',
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     'Medical Protocol Reference',
     'First Responder PWA',
   ],
-  authors: [{ name: 'FieldAid Medical Response Team', url: 'https://fieldaid.app' }],
+  authors: [{ name: 'FieldAid Medical Response Team', url: 'https://field-aid.vercel.app' }],
   creator: 'FieldAid',
   publisher: 'FieldAid Medical Systems',
   alternates: {
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://fieldaid.app',
+    url: 'https://field-aid.vercel.app',
     title: 'FieldAid — Offline Emergency First Aid & Triage PWA',
     description:
       'Zero-latency, 100% offline emergency medical protocols, START triage wizard, 110 BPM CPR metronome, and weight-based dosage calculator.',
@@ -98,7 +98,8 @@ const medicalPageJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'MedicalWebPage',
   name: 'FieldAid — Offline Emergency First Aid & Triage',
-  url: 'https://fieldaid.app',
+  url: 'https://field-aid.vercel.app',
+  sameAs: ['https://triage-first-aid.vercel.app'],
   description:
     'Offline-first emergency medical protocols, START triage wizard, 110 BPM CPR metronome, and pediatric dosage calculator.',
   medicalAudience: 'Emergency Rescuers, Wilderness Hikers, Parents, First Responders',
@@ -107,7 +108,7 @@ const medicalPageJsonLd = {
   author: {
     '@type': 'Organization',
     name: 'FieldAid Emergency Medical Response',
-    url: 'https://fieldaid.app',
+    url: 'https://field-aid.vercel.app',
   },
 };
 
@@ -115,6 +116,8 @@ const softwareAppJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'FieldAid PWA',
+  url: 'https://field-aid.vercel.app',
+  sameAs: ['https://triage-first-aid.vercel.app'],
   operatingSystem: 'Any (Web, iOS, Android)',
   applicationCategory: 'HealthApplication',
   offers: {

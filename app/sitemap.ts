@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import protocolsData from '@/data/protocols.json';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://fieldaid.app';
+  const baseUrl = 'https://field-aid.vercel.app';
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {

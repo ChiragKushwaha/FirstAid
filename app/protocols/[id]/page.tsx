@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     openGraph: {
       title: `${protocol.title} — Emergency First Aid Guide`,
       description: protocol.summary,
-      url: `https://fieldaid.app/protocols/${id}`,
+      url: `https://field-aid.vercel.app/protocols/${id}`,
       type: 'article',
       siteName: 'FieldAid Emergency Response',
     },
@@ -76,19 +76,19 @@ export default async function ProtocolPage({ params }: PageProps) {
         '@type': 'ListItem',
         position: 1,
         name: 'Home',
-        item: 'https://fieldaid.app',
+        item: 'https://field-aid.vercel.app',
       },
       {
         '@type': 'ListItem',
         position: 2,
         name: 'Protocols',
-        item: 'https://fieldaid.app/protocols',
+        item: 'https://field-aid.vercel.app/protocols',
       },
       {
         '@type': 'ListItem',
         position: 3,
         name: protocol.title,
-        item: `https://fieldaid.app/protocols/${protocol.id}`,
+        item: `https://field-aid.vercel.app/protocols/${protocol.id}`,
       },
     ],
   };

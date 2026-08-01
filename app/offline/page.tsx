@@ -7,7 +7,7 @@ import ThemeToggle from '@/components/ThemeToggle';
 export default function OfflineFallbackPage() {
   return (
     <div className="flex flex-col min-h-screen bg-canvas text-main pb-12">
-      <header className="flex items-center justify-between px-6 pt-14 pb-4">
+      <header className="flex items-center justify-between px-6 pt-8 sm:pt-10 pb-4">
         <div className="flex items-center gap-2">
           <div className="w-10 h-10 rounded-full bg-[#EB7A53] flex items-center justify-center text-white font-bold">
             <WifiOff className="w-5 h-5" />

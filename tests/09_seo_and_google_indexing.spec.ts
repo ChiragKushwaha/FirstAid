@@ -13,12 +13,12 @@ test.describe('SEO & Google Search Indexing Audit', () => {
 
     const xml = await res.text();
     expect(xml).toContain('<urlset');
-    expect(xml).toContain('https://fieldaid.app</loc>');
-    expect(xml).toContain('https://fieldaid.app/triage</loc>');
-    expect(xml).toContain('https://fieldaid.app/cpr</loc>');
-    expect(xml).toContain('https://fieldaid.app/dosage</loc>');
-    expect(xml).toContain('https://fieldaid.app/protocols</loc>');
-    expect(xml).toContain('https://fieldaid.app/protocols/protocol_trauma_hemorrhage</loc>');
+    expect(xml).toContain('https://field-aid.vercel.app</loc>');
+    expect(xml).toContain('https://field-aid.vercel.app/triage</loc>');
+    expect(xml).toContain('https://field-aid.vercel.app/cpr</loc>');
+    expect(xml).toContain('https://field-aid.vercel.app/dosage</loc>');
+    expect(xml).toContain('https://field-aid.vercel.app/protocols</loc>');
+    expect(xml).toContain('https://field-aid.vercel.app/protocols/protocol_trauma_hemorrhage</loc>');
   });
 
   test('should serve valid robots.txt at /robots.txt referencing sitemap.xml', async ({ request }) => {
@@ -28,7 +28,7 @@ test.describe('SEO & Google Search Indexing Audit', () => {
     const text = await res.text();
     expect(text.toLowerCase()).toContain('user-agent: *');
     expect(text).toContain('Allow: /');
-    expect(text).toContain('Sitemap: https://fieldaid.app/sitemap.xml');
+    expect(text).toContain('Sitemap: https://field-aid.vercel.app/sitemap.xml');
   });
 
   test('should render rich SEO tags, canonical link, and JSON-LD schemas on Home Page', async ({ page }) => {
@@ -40,7 +40,7 @@ test.describe('SEO & Google Search Indexing Audit', () => {
 
     // Canonical link
     const canonical = page.locator('link[rel="canonical"]');
-    await expect(canonical).toHaveAttribute('href', 'https://fieldaid.app');
+    await expect(canonical).toHaveAttribute('href', 'https://field-aid.vercel.app');
 
     // OpenGraph & Twitter tags
     await expect(page.locator('meta[property="og:title"]')).toBeAttached();
@@ -65,7 +65,7 @@ test.describe('SEO & Google Search Indexing Audit', () => {
 
     // Check canonical link
     const canonical = page.locator('link[rel="canonical"]');
-    await expect(canonical).toHaveAttribute('href', 'https://fieldaid.app/protocols/protocol_trauma_hemorrhage');
+    await expect(canonical).toHaveAttribute('href', 'https://field-aid.vercel.app/protocols/protocol_trauma_hemorrhage');
 
     // Check JSON-LD procedure schema
     const jsonLdScripts = page.locator('script[type="application/ld+json"]');
