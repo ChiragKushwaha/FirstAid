@@ -28,7 +28,7 @@ test.describe('Emergency Triage Wizard (START & JumpSTART Algorithms)', () => {
     await page.getByRole('button', { name: /Yes — Can Walk/i }).first().click();
 
     await expect(page.locator('text=GREEN — Minor').first()).toBeVisible();
-    await expect(page.locator('text=Delayed / Walking Wounded').first()).toBeVisible();
+    await expect(page.locator('text=Minor / Walking Wounded').first()).toBeVisible();
   });
 
   test('should navigate Adult START algorithm to BLACK category (Deceased)', async ({ page }) => {

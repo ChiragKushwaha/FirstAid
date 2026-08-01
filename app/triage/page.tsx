@@ -162,7 +162,7 @@ const TRIAGE_RESULTS: Record<
 > = {
   GREEN: {
     label: 'GREEN — Minor',
-    sub: 'Delayed / Walking Wounded',
+    sub: 'Minor / Walking Wounded',
     description: 'Patient is ambulatory with minor injuries. Not in immediate danger.',
     action: 'Treat and release or direct to minor treatment area. Reassess if condition changes.',
     bgColor: 'var(--green)',
@@ -186,11 +186,11 @@ const TRIAGE_RESULTS: Record<
   },
   BLACK: {
     label: 'BLACK — Deceased',
-    sub: 'Deceased or Unsurvivable',
+    sub: 'Deceased / Expectant',
     description: 'No breathing after airway intervention, or injuries incompatible with life.',
-    bgColor: 'var(--cream)',
     action: 'Do not attempt prolonged resuscitation in mass casualty. Tag and provide comfort if expectant.',
-    textLight: false,
+    bgColor: '#171410',
+    textLight: true,
   },
 };
 
@@ -334,11 +334,11 @@ export default function TriagePage() {
                   <span>YELLOW — Delayed (Serious but Stable)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full" style={{ background: 'var(--coral)' }} />
+                  <div className="w-2.5 h-2.5 rounded-full border border-white" style={{ background: 'var(--coral)' }} />
                   <span>RED — Immediate (Life-Threatening)</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-2.5 h-2.5 rounded-full bg-white/40" />
+                  <div className="w-2.5 h-2.5 rounded-full bg-black border border-white/50" />
                   <span>BLACK — Deceased / Expectant</span>
                 </div>
               </div>
