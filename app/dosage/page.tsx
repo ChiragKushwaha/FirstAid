@@ -6,11 +6,28 @@ import { ArrowLeft, Search, AlertTriangle, Check } from 'lucide-react';
 import drugsData from '@/data/drugs.json';
 import { calculateDose, convertLbsToKg, type Drug, type DoseResult } from '@/lib/dose-calculator';
 import ThemeToggle from '@/components/ThemeToggle';
+import SlidingSegmentedControl from '@/components/SlidingSegmentedControl';
+import SlidingPillsNav from '@/components/SlidingPillsNav';
 
 type WeightUnit = 'kg' | 'lbs';
 type AgeCategory = 'Infant' | 'Child' | 'Adult';
 
 const drugs: Drug[] = drugsData as Drug[];
+
+const CATEGORY_MAP: Record<string, string> = {
+  'All': 'All',
+  'Analgesic / Antipyretic': 'Analgesics',
+  'NSAID / Anti-inflammatory': 'NSAIDs',
+  'Antihistamine': 'Antihistamines',
+  'Antidote / Opioid Antagonist': 'Antidotes',
+  'Bronchodilator / Anticholinergic': 'Bronchodilators',
+  'Antiemetic': 'Antiemetics',
+  'Antibiotic / Penicillin': 'Antibiotics',
+  'Corticosteroid': 'Steroids',
+  'Antiseptic / Disinfectant': 'Antiseptics',
+  'Electrolyte / Hydration': 'Electrolytes',
+};
+
 const CATEGORIES = ['All', ...Array.from(new Set(drugs.map((d) => d.category)))];
 
 export default function DosagePage() {
@@ -58,30 +75,33 @@ export default function DosagePage() {
   return (
     <div className="flex flex-col min-h-screen bg-canvas text-main pb-12">
       {/* ── Header ── */}
-      <header className="flex items-center justify-between px-6 pt-14 pb-4">
+      <header className="flex items-center justify-between px-4 sm:px-6 pt-10 sm:pt-14 pb-4">
         <button
           onClick={() => router.back()}
-          className="w-11 h-11 rounded-full flex items-center justify-center transition-transform active:scale-95 border border-current/15 bg-white/10 text-current hover:bg-white/20"
+          className="icon-btn"
           aria-label="Go Back"
         >
           <ArrowLeft className="w-5 h-5" strokeWidth={2} />
         </button>
 
         <div className="text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest opacity-50">PRD Formula Calculator</p>
-          <h1 className="text-base font-bold">Dosage Calculator</h1>
+          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-widest text-warm-muted">PRD Formula Calculator</p>
+          <h1 className="text-sm sm:text-base font-bold">Dosage Calculator</h1>
         </div>
 
         <ThemeToggle />
       </header>
 
-      <main className="px-6 flex-1 space-y-4">
-        {/* ── Weight & Age Input Card (Yellow Leaf Card) ── */}
-        <section className="feat-card feat-card-yellow leaf-card-left p-6 space-y-3" aria-label="Patient Weight and Age Group">
-          <div className="card-handle" style={{ background: 'rgba(0,0,0,0.15)' }} />
-          <div className="flex items-center justify-between text-black">
-            <label htmlFor="weight-input" className="text-xs font-extrabold uppercase tracking-wider text-black/60">
-              1. Patient Weight &amp; Group
+      <main className="px-4 sm:px-6 flex-1 space-y-4 max-w-md mx-auto w-full">
+        {/* ── Weight & Age Input Card ── */}
+        <section
+          className="p-4 sm:p-6 space-y-3 rounded-[var(--radius-card)]"
+          style={{ background: 'var(--gold)', color: '#1A1510', boxShadow: 'var(--card-shadow)' }}
+          aria-label="Patient Weight and Age Group"
+        >
+          <div className="flex items-center justify-between">
+            <label htmlFor="weight-input" className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider opacity-70">
+              1. Weight &amp; Group
             </label>
             {weightKg && (
               <span className="text-xs font-extrabold bg-black/10 px-2.5 py-1 rounded-full">
@@ -90,102 +110,81 @@ export default function DosagePage() {
             )}
           </div>
 
-          <div
-            className="bg-black/10 p-1 rounded-2xl flex gap-1 items-center"
-            role="radiogroup"
-            aria-label="Patient Age Group"
-          >
-            {(['Infant', 'Child', 'Adult'] as const).map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setAgeCategory(cat)}
-                role="radio"
-                aria-checked={ageCategory === cat}
-                className={`flex-1 py-1.5 rounded-xl text-xs font-extrabold transition-all ${
-                  ageCategory === cat ? 'bg-black text-white' : 'text-black/60 hover:text-black'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          <SlidingSegmentedControl<AgeCategory>
+            ariaLabel="Patient Age Group"
+            value={ageCategory}
+            onChange={setAgeCategory}
+            activeColor="#1A1510"
+            activeTextColor="#FFFFFF"
+            options={[
+              { id: 'Infant', label: 'Infant' },
+              { id: 'Child', label: 'Child' },
+              { id: 'Adult', label: 'Adult' },
+            ]}
+          />
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 items-center">
             <input
               id="weight-input"
               type="number"
               inputMode="decimal"
               value={weightValue}
               onChange={(e) => setWeightValue(e.target.value)}
-              placeholder="Enter weight"
-              className="flex-1 min-w-0 h-14 bg-white/40 text-black placeholder:text-black/40 font-black text-2xl px-4 rounded-2xl border-none focus:outline-none"
+              placeholder="Weight"
+              className="flex-1 min-w-0 h-13 sm:h-14 bg-white/40 text-[#1A1510] placeholder:text-[#1A1510]/40 font-black text-xl sm:text-2xl px-3.5 sm:px-4 rounded-2xl border-none focus:outline-none"
               aria-label="Patient Weight"
             />
-            <div
-              className="bg-black/10 p-1 rounded-2xl flex gap-1 items-center flex-shrink-0"
-              role="radiogroup"
-              aria-label="Weight Unit"
-            >
-              {(['kg', 'lbs'] as const).map((u) => (
-                <button
-                  key={u}
-                  onClick={() => setWeightUnit(u)}
-                  role="radio"
-                  aria-checked={weightUnit === u}
-                  className={`px-3.5 h-12 rounded-xl text-xs font-extrabold transition-all ${
-                    weightUnit === u ? 'bg-black text-white' : 'text-black/60 hover:text-black'
-                  }`}
-                >
-                  {u}
-                </button>
-              ))}
+            <div className="w-28 flex-shrink-0">
+              <SlidingSegmentedControl<WeightUnit>
+                ariaLabel="Weight Unit"
+                value={weightUnit}
+                onChange={setWeightUnit}
+                activeColor="#1A1510"
+                activeTextColor="#FFFFFF"
+                options={[
+                  { id: 'kg', label: 'kg' },
+                  { id: 'lbs', label: 'lbs' },
+                ]}
+              />
             </div>
           </div>
         </section>
 
-        {/* ── Drug Selection Card (Cream Leaf Card) ── */}
-        <section className="feat-card feat-card-cream leaf-card-full p-6 space-y-4" aria-label="Select Medication">
-          <div className="card-handle" style={{ background: 'rgba(0,0,0,0.15)' }} />
-          <div className="text-black">
-            <label htmlFor="drug-search" className="text-xs font-extrabold uppercase tracking-wider text-black/60">
+        {/* ── Drug Selection Card ── */}
+        <section className="warm-card p-4 sm:p-6 space-y-4" aria-label="Select Medication">
+          <div>
+            <label htmlFor="drug-search" className="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-warm-muted">
               2. Select Pre-Loaded Drug
             </label>
             {selectedDrug && (
-              <p className="text-lg font-black mt-1 text-black">
+              <p className="text-base sm:text-lg font-black mt-0.5">
                 {selectedDrug.generic_name}
               </p>
             )}
           </div>
 
           <div className="relative">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-black/50" />
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-[var(--text-sub)] pointer-events-none" />
             <input
               id="drug-search"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search generic / brand..."
-              className="w-full h-11 bg-black/5 text-black placeholder:text-black/40 font-semibold text-sm pl-10 pr-4 rounded-xl focus:outline-none"
+              className="w-full h-11 bg-[var(--card-bg-solid)] text-[var(--text-main)] placeholder:text-[var(--text-sub)] font-bold text-sm pl-10 pr-4 rounded-xl focus:outline-none border border-[var(--card-border)] shadow-sm transition-all focus:border-[var(--orange)] focus:ring-2 focus:ring-[var(--orange)]/30"
               aria-label="Search Drugs"
             />
           </div>
 
-          <div className="flex gap-2 overflow-x-auto no-scrollbar py-2.5 items-center" aria-label="Drug Category Filter">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap flex-shrink-0 transition-all ${
-                  category === cat
-                    ? 'bg-black text-white'
-                    : 'bg-black/5 text-black/60 hover:text-black'
-                }`}
-                aria-pressed={category === cat}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+          <SlidingPillsNav
+            ariaLabel="Drug Category Filter"
+            options={CATEGORIES.map((c) => CATEGORY_MAP[c] || c)}
+            value={CATEGORY_MAP[category] || category}
+            onChange={(selectedLabel) => {
+              const matchedKey = CATEGORIES.find((c) => (CATEGORY_MAP[c] || c) === selectedLabel);
+              if (matchedKey) setCategory(matchedKey);
+            }}
+          />
 
           <div className="space-y-2 max-h-48 overflow-y-auto pr-1" role="listbox" aria-label="Medications List">
             {filteredDrugs.map((drug) => {
@@ -197,44 +196,50 @@ export default function DosagePage() {
                   role="option"
                   aria-selected={isSelected}
                   className={`w-full flex items-center justify-between p-3 rounded-2xl text-left transition-all ${
-                    isSelected ? 'bg-black text-white shadow' : 'bg-black/5 text-black hover:bg-black/10'
+                    isSelected
+                      ? 'bg-[var(--orange)] text-white shadow-sm'
+                      : 'bg-[var(--input-bg)] hover:bg-[var(--input-border)]'
                   }`}
                 >
                   <div className="min-w-0 pr-2">
                     <p className="font-extrabold text-sm truncate">{drug.generic_name}</p>
-                    <p className={`text-xs truncate ${isSelected ? 'text-white/60' : 'text-black/50'}`}>
+                    <p className={`text-xs truncate ${isSelected ? 'text-white/70' : 'text-warm-muted'}`}>
                       {drug.brand_names.join(', ')}
                     </p>
                   </div>
-                  {isSelected && <Check className="w-4 h-4 text-[#A8D672] flex-shrink-0" />}
+                  {isSelected && <Check className="w-4 h-4 text-white flex-shrink-0" />}
                 </button>
               );
             })}
           </div>
         </section>
 
-        {/* ── Dose Result Card (Coral Leaf Card) ── */}
+        {/* ── Dose Result Card ── */}
         {result && selectedDrug && weightKg && (
-          <section className="feat-card feat-card-coral leaf-card-right p-6 space-y-4 animate-card-in" aria-live="polite" aria-label="Dosage Result">
-            <div className="card-handle" />
+          <section
+            className="p-5 sm:p-6 space-y-4 animate-card-in rounded-[var(--radius-card)]"
+            style={{ background: 'var(--coral)', color: '#FFFFFF', boxShadow: 'var(--card-shadow-lg)' }}
+            aria-live="polite"
+            aria-label="Dosage Result"
+          >
             <div>
               <span className="text-xs font-bold uppercase tracking-widest opacity-70">
                 Formula Output (mL)
               </span>
-              <h2 className="text-5xl font-black mt-1 leading-none">
+              <h2 className="text-4xl sm:text-5xl font-black mt-1 leading-none">
                 {result.displayDose}
               </h2>
-              <p className="text-sm font-bold opacity-80 mt-2">
+              <p className="text-xs sm:text-sm font-bold opacity-80 mt-2">
                 ({result.finalDoseMg} mg total) · {result.route}
               </p>
             </div>
 
-            <div className="p-3 bg-black/20 rounded-2xl text-[11px] font-bold text-white/90">
+            <div className="p-3 bg-black/15 rounded-2xl text-[11px] font-bold text-white/90">
               Volume = ({weightKg} kg × {selectedDrug.dosing_rules.mg_per_kg_default} mg/kg) ÷ ({selectedDrug.standard_concentration.mg} mg / {selectedDrug.standard_concentration.ml} mL)
             </div>
 
             {result.isCapped && (
-              <div className="p-3 bg-black/20 rounded-2xl text-xs font-bold flex items-center gap-2 text-[#F7D44C]">
+              <div className="p-3 bg-black/15 rounded-2xl text-xs font-bold flex items-center gap-2 text-[var(--gold)]">
                 <AlertTriangle className="w-4 h-4 flex-shrink-0" />
                 <span>Enforced Adult Upper Cap ({result.cappedAt?.toFixed(2)} mL max)</span>
               </div>

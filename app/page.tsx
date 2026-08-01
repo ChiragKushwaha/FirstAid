@@ -4,31 +4,19 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import {
   Heart,
-  Plus,
-  Mic,
-  CheckCircle2,
-  Circle,
   HelpCircle,
   Search,
   Activity,
   HeartPulse,
   ShieldAlert,
   Bug,
-  BookOpen,
   Zap,
   Syringe,
+  CheckCircle2,
 } from 'lucide-react';
 import ThemeToggle from '@/components/ThemeToggle';
 
-const CATEGORY_FILTERS = [
-  { label: 'All', count: 20 },
-  { label: 'Emergency', count: null },
-  { label: 'Dosage', count: null },
-  { label: 'Trauma', count: null },
-];
-
 export default function HomePage() {
-  const [activeFilter, setActiveFilter] = useState('All');
   const [showDisclaimer, setShowDisclaimer] = useState(false);
   const [favs, setFavs] = useState<Record<string, boolean>>({
     triage: true,
@@ -61,292 +49,283 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-canvas text-main pb-36 relative overflow-x-hidden">
+    <div className="flex flex-col min-h-screen bg-canvas text-main py-8 sm:py-10  relative overflow-x-hidden">
       <div className="w-full max-w-md mx-auto flex flex-col flex-1">
-        {/* ── Top Bar Header (WCAG Semantic Header) ── */}
-        <header className="flex items-center justify-between px-6 pt-10 pb-2">
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setShowDisclaimer(true)}
-            className="w-11 h-11 rounded-full bg-white/10 flex items-center justify-center text-current hover:bg-white/20 transition-all active:scale-95 border border-current/15"
-            aria-label="App Disclaimer & Medical Information"
-          >
-            <HelpCircle className="w-5 h-5 stroke-[2.2]" />
-          </button>
-          <ThemeToggle />
-        </div>
-
-        <Link
-          href="/protocols"
-          className="flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-current/15 text-xs font-bold text-current hover:bg-white/20 transition-all"
-          aria-label="Search Protocols"
-        >
-          <Search className="w-3.5 h-3.5" />
-          <span>Search Protocols</span>
-        </Link>
-      </header>
-
-      <main className="flex-1 flex flex-col">
-        {/* ── Main Hero Title ── */}
-        <section className="px-7 pt-2 pb-5" aria-label="Hero Title">
-          <h1 className="text-[56px] font-black leading-[0.92] tracking-[-0.04em]">
-            Field<br />
-            Aid
-          </h1>
-          <p className="text-xs font-bold opacity-60 uppercase tracking-widest mt-2">
-            Zero-latency offline first aid
-          </p>
-        </section>
-
-        {/* ── Category Filter Pills (WCAG Accessible Navigation) ── */}
-        <nav className="px-7 py-3 mb-2 flex gap-3 items-center overflow-x-auto no-scrollbar" aria-label="Category Filters">
-          {CATEGORY_FILTERS.map((f) => (
+        {/* ── Top Bar Header ── */}
+        <header className="flex items-center justify-between px-4 sm:px-5 pb-2 gap-1.5">
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
             <button
-              key={f.label}
-              onClick={() => setActiveFilter(f.label)}
-              className={`pill ${activeFilter === f.label ? 'active' : ''}`}
-              aria-pressed={activeFilter === f.label}
+              onClick={() => setShowDisclaimer(true)}
+              className="icon-btn"
+              aria-label="App Disclaimer & Medical Information"
             >
-              <span>{f.label}</span>
-              {f.count !== null && <span className="count">{f.count}</span>}
+              <HelpCircle className="w-5 h-5 stroke-[2]" />
             </button>
-          ))}
-        </nav>
-
-        {/* ── Feature Cards Masonry Grid ── */}
-        <section className="px-4 grid grid-cols-2 gap-3 items-start" aria-label="Emergency Features">
-          {/* LEFT COLUMN — Coral Card (#EB7A53) Leaf Corner */}
-          <div className="flex flex-col gap-3">
-            <Link
-              href="/triage"
-              className="feat-card feat-card-coral leaf-card-left p-5 flex flex-col justify-between"
-              style={{ minHeight: 320 }}
-              aria-label="Emergency Triage START Algorithm Wizard"
-            >
-              <div className="card-handle" />
-
-              <div className="flex items-start justify-between gap-1">
-                <div>
-                  <h2 className="text-[22px] font-black leading-[1.08] tracking-tight text-white">
-                    Emergency<br />Triage
-                  </h2>
-                </div>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleFav('triage');
-                  }}
-                  className="fav-btn w-9 h-9 flex-shrink-0"
-                  aria-label="Favorite Triage"
-                >
-                  <Heart
-                    className="w-4 h-4 text-white"
-                    fill={favs['triage'] ? 'white' : 'none'}
-                    strokeWidth={2.2}
-                  />
-                </button>
-              </div>
-
-              <div className="space-y-2 my-2">
-                <div className="bg-white/20 px-3 py-2 rounded-full flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full bg-black/20 text-white flex items-center justify-center flex-shrink-0">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-white" strokeWidth={2.5} />
-                  </div>
-                  <span className="text-xs font-bold text-white/90 line-through truncate">
-                    Walkable?
-                  </span>
-                </div>
-                <div className="bg-white/10 px-3 py-2 rounded-full flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full border-2 border-white/40 flex-shrink-0" />
-                  <span className="text-xs font-bold text-white truncate">
-                    Breathing (&gt;30)
-                  </span>
-                </div>
-                <div className="bg-white/10 px-3 py-2 rounded-full flex items-center gap-2.5">
-                  <div className="w-5 h-5 rounded-full border-2 border-white/40 flex-shrink-0" />
-                  <span className="text-xs font-bold text-white truncate">
-                    Perfusion (&gt;2s)
-                  </span>
-                </div>
-              </div>
-
-              <div className="pt-2 border-t border-white/20 flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-white/90">
-                <span>Rapid 30s Check</span>
-                <Activity className="w-4 h-4" />
-              </div>
-            </Link>
+            <ThemeToggle />
           </div>
 
-          {/* RIGHT COLUMN — Yellow Card (#F7D44C) Leaf Corner */}
-          <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
             <Link
-              href="/cpr"
-              className="feat-card feat-card-yellow leaf-card-right p-5 flex flex-col justify-between"
-              style={{ minHeight: 320 }}
-              aria-label="CPR Guide & 110 BPM Metronome"
+              href="/protocols"
+              className="btn-header btn-warm shrink-0 active:scale-95 transition-transform"
+              aria-label="Search Protocols"
             >
-              <div className="card-handle" />
+              <Search className="w-4 h-4" />
+              <span>Search Protocols</span>
+            </Link>
+          </div>
+        </header>
 
-              <div className="flex items-start justify-between gap-1">
-                <div>
-                  <h2 className="text-[22px] font-black leading-[1.08] tracking-tight text-black">
-                    CPR<br />Metronome
+        <main className="flex-1 flex flex-col">
+          <section className="px-5 sm:px-6 pt-3 sm:pt-4 pb-4" aria-label="Hero Title">
+            <p className="text-xs sm:text-sm font-semibold text-warm-sub mb-0.5">Hi 👋</p>
+            <h1 className="text-[32px] sm:text-[40px] font-black leading-tight tracking-[-0.03em] whitespace-nowrap">
+              Field Aid
+            </h1>
+            <p className="text-[11px] sm:text-xs font-bold text-warm-muted uppercase tracking-widest mt-1.5">
+              Zero-latency offline first aid
+            </p>
+          </section>
+
+          {/* ── Feature Cards Grid ── */}
+          <section className="px-3.5 sm:px-4 grid grid-cols-2 gap-2.5 sm:gap-3 items-start mt-1" aria-label="Emergency Features">
+            {/* LEFT COLUMN — Coral Card with leaf-left corner */}
+            <div className="flex flex-col gap-3 min-w-0">
+              <Link
+                href="/triage"
+                className="feat-card feat-card-coral leaf-card-left p-3.5 sm:p-5 flex flex-col justify-between"
+                style={{ minHeight: 290 }}
+                aria-label="Emergency Triage START Algorithm Wizard"
+              >
+                <div className="card-handle" />
+
+                <div className="flex items-start justify-between gap-1 min-w-0">
+                  <div className="min-w-0">
+                    <h2 className="text-base sm:text-[21px] font-black leading-[1.08] tracking-tight text-white">
+                      Emergency<br />Triage
+                    </h2>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleFav('triage');
+                    }}
+                    className="fav-btn"
+                    aria-label="Favorite Triage"
+                  >
+                    <Heart
+                      className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white"
+                      fill={favs['triage'] ? 'white' : 'none'}
+                      strokeWidth={2.2}
+                    />
+                  </button>
+                </div>
+
+                <div className="space-y-1.5 my-2 min-w-0">
+                  <div className="bg-white/20 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full flex items-center gap-2">
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-black/20 text-white flex items-center justify-center flex-shrink-0">
+                      <CheckCircle2 className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white" strokeWidth={2.5} />
+                    </div>
+                    <span className="text-[10px] sm:text-[11px] font-bold text-white/90 line-through truncate">
+                      Walkable?
+                    </span>
+                  </div>
+                  <div className="bg-white/10 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full flex items-center gap-2">
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-white/40 flex-shrink-0" />
+                    <span className="text-[10px] sm:text-[11px] font-bold text-white truncate">
+                      Breathing (&gt;30)
+                    </span>
+                  </div>
+                  <div className="bg-white/10 px-2.5 py-1.5 sm:px-3 sm:py-2 rounded-full flex items-center gap-2">
+                    <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 border-white/40 flex-shrink-0" />
+                    <span className="text-[10px] sm:text-[11px] font-bold text-white truncate">
+                      Perfusion (&gt;2s)
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-white/20 flex items-center justify-between text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider text-white/90">
+                  <span className="truncate">Rapid 30s Check</span>
+                  <Activity className="w-3.5 h-3.5 shrink-0" />
+                </div>
+              </Link>
+            </div>
+
+            {/* RIGHT COLUMN — Gold Card with leaf-right corner */}
+            <div className="flex flex-col gap-3 min-w-0">
+              <Link
+                href="/cpr"
+                className="feat-card feat-card-gold leaf-card-right p-3.5 sm:p-5 flex flex-col justify-between"
+                style={{ minHeight: 290 }}
+                aria-label="CPR Guide & 110 BPM Metronome"
+              >
+                <div className="card-handle" />
+
+                <div className="flex items-start justify-between gap-1 min-w-0">
+                  <div className="min-w-0">
+                    <h2 className="text-base sm:text-[21px] font-black leading-[1.08] tracking-tight">
+                      CPR<br />Metronome
+                    </h2>
+                    <p className="text-[10px] sm:text-[11px] font-semibold opacity-55 mt-0.5 truncate">
+                      110 BPM Pacer
+                    </p>
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleFav('cpr');
+                    }}
+                    className="fav-btn"
+                    style={{ background: 'rgba(0, 0, 0, 0.1)', color: '#171410' }}
+                    aria-label="Favorite CPR Metronome"
+                  >
+                    <Heart
+                      className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#171410]"
+                      fill={favs['cpr'] ? '#171410' : 'none'}
+                      stroke="#171410"
+                      strokeWidth={2.2}
+                    />
+                  </button>
+                </div>
+
+                <div className="my-2 flex flex-col items-center justify-center p-3 sm:p-3.5 rounded-2xl bg-black/8">
+                  <HeartPulse className="w-10 h-10 sm:w-11 sm:h-11 stroke-[1.8] animate-pulse" />
+                  <span className="text-[10px] sm:text-[11px] font-black mt-1 tracking-wider">110 BPM</span>
+                </div>
+
+                <div className="pt-2 border-t border-black/10 flex items-center justify-between text-[9px] sm:text-[10px] font-extrabold opacity-55 uppercase tracking-wider">
+                  <span className="truncate">30:2 &amp; 15:2 Toggles</span>
+                  <Zap className="w-3.5 h-3.5 shrink-0" />
+                </div>
+              </Link>
+            </div>
+          </section>
+
+          {/* ── Dosage Calculator Banner ── */}
+          <section className="px-5 sm:px-6 mt-4">
+            <Link
+              href="/dosage"
+              className="warm-card p-5 sm:p-6 flex items-center justify-between gap-4 min-h-[108px]"
+              aria-label="Weight-Based Dosage Calculator"
+            >
+              <div className="flex items-center gap-3.5 min-w-0">
+                <div className="w-12 h-12 sm:w-13 sm:h-13 rounded-2xl bg-[var(--orange)] flex items-center justify-center shadow-md text-white flex-shrink-0">
+                  <Syringe className="w-6 h-6" strokeWidth={2.2} />
+                </div>
+
+                <div className="min-w-0">
+                  <span className="text-[10px] sm:text-[11px] font-bold text-warm-muted uppercase tracking-wider">
+                    Weight Dosing Formula
+                  </span>
+                  <h2 className="text-base sm:text-lg font-black leading-tight mt-0.5 truncate">
+                    Dosage Calculator
                   </h2>
-                  <p className="text-xs font-semibold text-black/60 mt-0.5">
-                    110 BPM Pacer
+                  <p className="text-[11px] sm:text-xs font-semibold text-warm-sub truncate">
+                    Adult &amp; Pediatric Safe • Max Cap
                   </p>
                 </div>
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleFav('cpr');
-                  }}
-                  className="fav-btn fav-btn-dark w-9 h-9 flex-shrink-0"
-                  aria-label="Favorite CPR Metronome"
-                >
-                  <Heart
-                    className="w-4 h-4 text-black"
-                    fill={favs['cpr'] ? 'black' : 'none'}
-                    strokeWidth={2.2}
-                  />
-                </button>
               </div>
 
-              <div className="my-2 flex flex-col items-center justify-center p-3.5 rounded-3xl bg-black/10">
-                <HeartPulse className="w-12 h-12 stroke-[1.8] animate-pulse text-black" />
-                <span className="text-xs font-black mt-1 text-black tracking-wider">110 BPM</span>
-              </div>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  toggleFav('dosage');
+                }}
+                className="icon-btn w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0"
+                aria-label="Favorite Dosage Calculator"
+              >
+                <Heart
+                  className="w-4 h-4"
+                  fill={favs['dosage'] ? 'var(--orange)' : 'none'}
+                  stroke={favs['dosage'] ? 'var(--orange)' : 'currentColor'}
+                  strokeWidth={2.2}
+                />
+              </button>
+            </Link>
+          </section>
 
-              <div className="pt-2 border-t border-black/10 flex items-center justify-between text-[11px] font-extrabold text-black/70 uppercase tracking-wider">
-                <span>30:2 &amp; 15:2 Toggles</span>
-                <Zap className="w-4 h-4" />
+          {/* ── Bottom Row Quick Categories ── */}
+          <section className="px-5 sm:px-6 mt-4 grid grid-cols-2 gap-3 sm:gap-4">
+            <Link
+              href="/protocols"
+              className="warm-card p-5 sm:p-6 min-h-[112px] flex flex-col justify-between hover:shadow-lg transition-shadow"
+              aria-label="Bleeding and Trauma Protocols"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-warm-muted">Category</p>
+                  <span className="font-extrabold text-sm sm:text-base mt-1 block leading-snug">Bleeding &amp; Trauma</span>
+                </div>
+                <div className="w-11 h-11 rounded-2xl bg-[var(--coral)] flex items-center justify-center text-white flex-shrink-0 shadow-md">
+                  <ShieldAlert className="w-5 h-5" strokeWidth={2} />
+                </div>
               </div>
             </Link>
-          </div>
-        </section>
 
-        {/* ── Middle Cream Card (#F6ECC9) (Dosage Calculator) ── */}
-        <section className="px-4 mt-3">
-          <Link
-            href="/dosage"
-            className="feat-card feat-card-cream leaf-card-full p-4 flex items-center justify-between"
-            aria-label="Weight-Based Dosage Calculator"
+            <Link
+              href="/protocols"
+              className="warm-card p-5 sm:p-6 min-h-[112px] flex flex-col justify-between hover:shadow-lg transition-shadow"
+              aria-label="Bites and Stings Protocols"
+            >
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-warm-muted">Category</p>
+                  <span className="font-extrabold text-sm sm:text-base mt-1 block leading-snug">Bites &amp; Stings</span>
+                </div>
+                <div className="w-11 h-11 rounded-2xl bg-[var(--green)] flex items-center justify-center text-white flex-shrink-0 shadow-md">
+                  <Bug className="w-5 h-5" strokeWidth={2} />
+                </div>
+              </div>
+            </Link>
+          </section>
+        </main>
+
+        {/* ── Persistent Footer Disclaimer ── */}
+        <footer className="px-6 mt-8 text-center" role="contentinfo">
+          <p className="text-[11px] text-warm-muted leading-relaxed font-medium">
+            FieldAid is an informational reference guide for emergency situations when professional care is unavailable. Always seek emergency medical services if accessible.
+          </p>
+        </footer>
+
+        {/* ── Mandatory App Onboarding Modal ── */}
+        {showDisclaimer && (
+          <div
+            className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xl flex items-center justify-center p-6 animate-card-in"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="disclaimer-title"
           >
-            <div className="flex items-center gap-4">
-              <div className="w-13 h-13 rounded-full bg-white flex items-center justify-center shadow-sm text-black flex-shrink-0">
-                <Syringe className="w-6 h-6 text-black" strokeWidth={2.2} />
+            <div className="p-7 rounded-[32px] max-w-sm w-full space-y-4 shadow-2xl border border-[var(--card-border)]" style={{ background: 'var(--canvas-bg)' }}>
+              <div className="w-12 h-12 rounded-2xl bg-[var(--orange)] flex items-center justify-center text-white">
+                <ShieldAlert className="w-6 h-6 stroke-[2]" />
               </div>
 
               <div>
-                <span className="text-xs font-semibold text-black/50">
-                  Weight Dosing Formula
+                <span className="text-xs font-black uppercase tracking-widest text-warm-muted">
+                  Important Medical Notice
                 </span>
-                <h2 className="text-xl font-black leading-tight text-black mt-0.5">
-                  Dosage Calculator
+                <h2 id="disclaimer-title" className="text-2xl font-black leading-tight mt-1">
+                  FieldAid Onboarding
                 </h2>
-                <p className="text-xs font-medium text-black/60">
-                  Adult &amp; Pediatric Safe • Max Cap Enforced
-                </p>
               </div>
+
+              <p className="text-xs font-semibold text-warm-sub leading-relaxed">
+                FieldAid provides step-by-step emergency protocols, dosage calculations, and CPR metronomes for zero-connectivity environments.
+              </p>
+
+              <p className="text-xs font-bold leading-relaxed p-3 rounded-2xl" style={{ background: 'var(--input-bg)', border: '1px solid var(--card-border)' }}>
+                ⚠️ FieldAid is an informational guide when professional care is unavailable. It is not a substitute for professional medical training or local emergency services.
+              </p>
+
+              <button
+                onClick={acceptDisclaimer}
+                className="w-full py-4 rounded-full font-extrabold text-sm active:scale-95 transition-all btn-warm"
+              >
+                I Understand &amp; Accept
+              </button>
             </div>
-
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                toggleFav('dosage');
-              }}
-              className="fav-btn fav-btn-dark w-9 h-9 flex-shrink-0"
-              aria-label="Favorite Dosage Calculator"
-            >
-              <Heart
-                className="w-4 h-4 text-black"
-                fill={favs['dosage'] ? 'black' : 'none'}
-                strokeWidth={2.2}
-              />
-            </button>
-          </Link>
-        </section>
-
-        {/* ── Bottom Row Quick Categories ── */}
-        <section className="px-5 mt-3.5 grid grid-cols-2 gap-3.5">
-          <Link
-            href="/protocols"
-            className="feat-card feat-card-green leaf-card-left p-5 min-h-[100px] flex flex-col justify-between"
-            aria-label="Bleeding and Trauma Protocols"
-          >
-            <div className="card-handle" />
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[10px] font-extrabold uppercase tracking-widest opacity-60">Category</p>
-                <span className="font-extrabold text-sm">Bleeding &amp; Trauma</span>
-              </div>
-              <ShieldAlert className="w-5 h-5 opacity-70" />
-            </div>
-          </Link>
-
-          <Link
-            href="/protocols"
-            className="feat-card feat-card-blue leaf-card-right p-5 min-h-[100px] flex flex-col justify-between"
-            aria-label="Bites and Stings Protocols"
-          >
-            <div className="card-handle" />
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[10px] font-extrabold uppercase tracking-widest opacity-60">Category</p>
-                <span className="font-extrabold text-sm">Bites &amp; Stings</span>
-              </div>
-              <Bug className="w-5 h-5 opacity-70" />
-            </div>
-          </Link>
-        </section>
-      </main>
-
-      {/* ── Persistent Footer Disclaimer (Semantic <footer>) ── */}
-      <footer className="px-7 mt-8 text-center" role="contentinfo">
-        <p className="text-[11px] opacity-40 leading-relaxed font-medium">
-          FieldAid is an informational reference guide for emergency situations when professional care is unavailable. Always seek emergency medical services if accessible.
-        </p>
-      </footer>
-
-      {/* ── Mandatory App Onboarding Modal ── */}
-      {showDisclaimer && (
-        <div
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-6 animate-card-in"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="disclaimer-title"
-        >
-          <div className="bg-[#F6ECC9] text-black p-7 rounded-[36px] max-w-sm w-full space-y-4 shadow-2xl">
-            <div className="w-12 h-12 rounded-full bg-black/10 flex items-center justify-center text-black">
-              <ShieldAlert className="w-6 h-6 stroke-[2]" />
-            </div>
-
-            <div>
-              <span className="text-xs font-black uppercase tracking-widest text-black/50">
-                Important Medical Notice
-              </span>
-              <h2 id="disclaimer-title" className="text-2xl font-black text-black leading-tight mt-1">
-                FieldAid Onboarding
-              </h2>
-            </div>
-
-            <p className="text-xs font-semibold text-black/80 leading-relaxed">
-              FieldAid provides step-by-step emergency protocols, dosage calculations, and CPR metronomes for zero-connectivity environments.
-            </p>
-
-            <p className="text-xs font-bold text-black leading-relaxed p-3 bg-black/5 rounded-2xl">
-              ⚠️ FieldAid is an informational guide when professional care is unavailable. It is not a substitute for professional medical training or local emergency services.
-            </p>
-
-            <button
-              onClick={acceptDisclaimer}
-              className="w-full py-4 rounded-full bg-black text-white font-extrabold text-sm active:scale-95 transition-all shadow-lg"
-            >
-              I Understand &amp; Accept
-            </button>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );

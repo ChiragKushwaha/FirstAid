@@ -1,5 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from 'next';
+import RoutePreloader from '@/components/RoutePreloader';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -86,7 +87,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#000000',
+  themeColor: '#EDE8DB',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -134,7 +135,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="light">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -144,12 +145,6 @@ export default function RootLayout({
           rel="stylesheet"
         />
         <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32x32.png" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
         <script
           type="application/ld+json"
@@ -159,28 +154,32 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareAppJsonLd) }}
         />
-        {/* Inline script to initialize theme and register Service Worker */}
+        {/* Inline script to initialize theme and register Service Worker safely */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
                   var saved = localStorage.getItem('fieldaid_theme');
-                  var theme = saved || 'dark';
+                  var theme = saved || 'light';
                   document.documentElement.setAttribute('data-theme', theme);
                 } catch (e) {}
 
                 if ('serviceWorker' in navigator) {
-                  window.addEventListener('load', function() {
-                    navigator.serviceWorker.register('/sw.js').then(
-                      function(reg) {
-                        console.log('[PWABuilder] SW registered successfully:', reg.scope);
-                      },
-                      function(err) {
-                        console.warn('[PWABuilder] SW registration failed:', err);
+                  if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+                    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                      for (var i = 0; i < registrations.length; i++) {
+                        registrations[i].unregister();
                       }
-                    );
-                  });
+                    });
+                  } else {
+                    window.addEventListener('load', function() {
+                      navigator.serviceWorker.register('/sw.js').then(
+                        function(reg) { console.log('[ServiceWorker] Registered:', reg.scope); },
+                        function(err) { console.warn('[ServiceWorker] Registration failed:', err); }
+                      );
+                    });
+                  }
                 }
               })();
             `,
@@ -189,16 +188,23 @@ export default function RootLayout({
       </head>
       <body
         style={{ fontFamily: "'Outfit', 'Plus Jakarta Sans', system-ui, sans-serif" }}
-        className="bg-black text-white antialiased select-none overflow-x-hidden transition-colors duration-200"
+        className="antialiased select-none overflow-x-hidden transition-colors duration-300"
       >
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-[var(--orange)] focus:text-white focus:font-bold focus:rounded-xl focus:shadow-2xl"
+        >
+          Skip to main content
+        </a>
+        <RoutePreloader />
         <div
           role="status"
-          aria-live="assertive"
+          aria-live="polite"
           aria-atomic="true"
           className="sr-only"
           id="aria-announcer"
         />
-        <div className="min-h-screen flex flex-col max-w-md mx-auto relative bg-canvas">
+        <div className="min-h-screen flex flex-col max-w-md mx-auto relative bg-canvas" id="main-content">
           {children}
         </div>
       </body>

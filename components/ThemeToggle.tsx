@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
 
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [theme, setTheme] = useState<'dark' | 'light'>('light');
 
   useEffect(() => {
     const current = document.documentElement.getAttribute('data-theme') as 'dark' | 'light';
@@ -13,13 +13,23 @@ export default function ThemeToggle() {
 
   const toggleTheme = () => {
     const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    setTheme(nextTheme);
-    document.documentElement.setAttribute('data-theme', nextTheme);
-    localStorage.setItem('fieldaid_theme', nextTheme);
 
-    const announcer = document.getElementById('aria-announcer');
-    if (announcer) {
-      announcer.textContent = `Switched to ${nextTheme} mode`;
+    const applyThemeChange = () => {
+      setTheme(nextTheme);
+      document.documentElement.setAttribute('data-theme', nextTheme);
+      localStorage.setItem('fieldaid_theme', nextTheme);
+
+      const announcer = document.getElementById('aria-announcer');
+      if (announcer) {
+        announcer.textContent = `Switched to ${nextTheme} mode`;
+      }
+    };
+
+    // Use native View Transitions API if supported for liquid smooth theme transition
+    if (typeof document !== 'undefined' && 'startViewTransition' in document) {
+      (document as unknown as { startViewTransition: (cb: () => void) => void }).startViewTransition(applyThemeChange);
+    } else {
+      applyThemeChange();
     }
   };
 
@@ -28,13 +38,26 @@ export default function ThemeToggle() {
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
       title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
-      className="w-11 h-11 rounded-full flex items-center justify-center transition-all active:scale-95 border border-current/15 bg-white/10 text-current hover:bg-white/20"
+      className="icon-btn relative overflow-hidden transition-all duration-300 active:scale-90 flex items-center justify-center"
     >
-      {theme === 'dark' ? (
-        <Sun className="w-5 h-5 text-[#F7D44C] stroke-[2.2]" />
-      ) : (
-        <Moon className="w-5 h-5 text-black stroke-[2.2]" />
-      )}
+      <div
+        className={`transition-all duration-400 ease-out transform flex items-center justify-center ${
+          theme === 'dark'
+            ? 'rotate-0 scale-100 opacity-100'
+            : '-rotate-90 scale-0 opacity-0 absolute'
+        }`}
+      >
+        <Sun className="w-5 h-5 text-[var(--gold)] stroke-[2.2]" />
+      </div>
+      <div
+        className={`transition-all duration-400 ease-out transform flex items-center justify-center ${
+          theme === 'light'
+            ? 'rotate-0 scale-100 opacity-100'
+            : 'rotate-90 scale-0 opacity-0 absolute'
+        }`}
+      >
+        <Moon className="w-5 h-5 stroke-[2.2]" />
+      </div>
     </button>
   );
 }
